@@ -25,4 +25,6 @@ public class AssignmentUser {
     @ManyToOne
     @MapsId("assignmentId")
     private Assignment assignment;
+
+    private String state = "in progress";
 }

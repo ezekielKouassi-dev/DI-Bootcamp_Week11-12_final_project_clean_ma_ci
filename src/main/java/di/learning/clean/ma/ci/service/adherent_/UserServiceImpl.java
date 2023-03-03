@@ -1,7 +1,10 @@
 package di.learning.clean.ma.ci.service.adherent_;
 
+import di.learning.clean.ma.ci.entity.AssignmentUser;
+import di.learning.clean.ma.ci.entity.AssignmentUserId;
 import di.learning.clean.ma.ci.entity.User;
 import di.learning.clean.ma.ci.repository.AdherentRepository;
+import di.learning.clean.ma.ci.repository.AssignmentUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,8 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     @Autowired
     AdherentRepository adherentRepository;
+    @Autowired
+    AssignmentUserRepository assignmentUserRepository;
     @Override
     public List<User> fetchAllUser() {
         return adherentRepository.findAll();
@@ -69,5 +74,19 @@ public class UserServiceImpl implements UserService {
         }
         adherentRepository.deleteById(adherentId);
         return "User successfully deleted";
+    }
+
+    @Override
+    public String leaveAssignment(Long userId, Long assignmentId) {
+        AssignmentUserId assignmentUserId = new AssignmentUserId(userId, assignmentId);
+        Optional<AssignmentUser> assignmentUser = assignmentUserRepository.findById(assignmentUserId);
+        if(assignmentUser.isPresent()) {
+            // throw new exception
+            assignmentUser.get().setState("leave");
+            assignmentUserRepository.save(assignmentUser.get());
+            return "assignment has been leave";
+        }
+        return "leave assignment failed";
+
     }
 }

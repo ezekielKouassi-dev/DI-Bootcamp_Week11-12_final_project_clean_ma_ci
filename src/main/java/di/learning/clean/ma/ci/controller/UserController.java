@@ -48,6 +48,7 @@ public class UserController {
     public String acceptAssignment(@PathVariable Long userId, @PathVariable Long assignmentId) {
         User user = userService.fetchUserById(userId);
         Assignment assignment = assignmentService.fetchAssignment(assignmentId);
+        assignment.setNumberOfAcceptation(assignment.getNumberOfAcceptation() + 1);
         AssignmentUser assignmentUser = new AssignmentUser();
         AssignmentUserId assignmentUserId = new AssignmentUserId();
         assignmentUserId.setUserId(userId);
@@ -60,4 +61,16 @@ public class UserController {
 
         return userService.saveUser(user);
     }
+
+    // TODO: leave assignment
+    /*
+         consist for the de user to revoke it he acceptation.
+        my process to give leave assignment feature to the user is :
+            - just change assignment status
+     */
+    @PatchMapping("/{userId}/assignments/{assignmentId}")
+    public String leaveAssignment(@PathVariable Long userId, @PathVariable Long assignmentId) {
+        return userService.leaveAssignment(userId, assignmentId);
+    }
+
 }

@@ -15,4 +15,5 @@ public interface UserService {
 
     public String deleteUserById(Long userId);
 
+    public String leaveAssignment(Long userId, Long assignmentId);
 }

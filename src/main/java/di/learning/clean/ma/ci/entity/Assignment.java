@@ -20,9 +20,10 @@ public class Assignment {
     private Long assignmentId;
     private String title;
     private String description;
-    private Long numberOfAdherent;
+    private Long numberOfAdherent = 0L;
+    private Long numberOfAcceptation = 0L;
     private double reward;
-    private Date createDat;
+    private Date createDat = new Date();
     private Date updateDat;
     private Date duration;
     private boolean isCompleted;
