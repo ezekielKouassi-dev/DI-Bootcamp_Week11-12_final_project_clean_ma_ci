@@ -1,5 +1,6 @@
 package di.learning.clean.ma.ci.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ public class Assignment {
     private boolean isCompleted;
     private boolean status;
     @OneToMany(mappedBy = "assignment")
+    @JsonIdentityReference(alwaysAsId = true)
     private List<AssignmentUser> assignmentUsers;
 
     @ManyToOne

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Embeddable
 @Data
@@ -14,4 +15,20 @@ import java.io.Serializable;
 public class AssignmentUserId implements Serializable {
     private Long userId;
     private Long assignmentId;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AssignmentUserId that)) return false;
+        return getUserId().equals(that.getUserId()) && getAssignmentId().equals(that.getAssignmentId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUserId(), getAssignmentId());
+    }
+
+
+
+
 }

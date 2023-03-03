@@ -1,5 +1,6 @@
 package di.learning.clean.ma.ci.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,7 @@ public class User {
     private Date updateDat;
     private boolean status;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIdentityReference(alwaysAsId = true)
     private List<AssignmentUser> assignmentUsers;
     @ManyToOne
     private Ranks ranks;
