@@ -9,29 +9,26 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "assignments")
+@Table(name="adherents")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Assignment {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long assignmentId;
-    private String title;
-    private String description;
-    private Long numberOfAdherent;
-    private double reward;
+    private Long adherentId;
+    private String lastName;
+    private String firstName;
+    private String email;
+    private String phone;
+    private String username;
+    private String password;
+    private String role;
     private Date createDat;
     private Date updateDat;
-    private Date duration;
-    private boolean isCompleted;
     private boolean status;
-    @OneToMany(mappedBy = "assignment")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<AssignmentUser> assignmentUsers;
-
     @ManyToOne
-    private ProcessingCompany processingCompany;
-
-    @ManyToOne
-    private PointOfDrop pointOfDrop;
+    private Ranks ranks;
 }

@@ -7,17 +7,17 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "adherent_assignment")
+@Table(name = "assignment_user")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdherentAssignment {
+public class AssignmentUser {
     @EmbeddedId
-    private AdherentAssignmentId id;
+    private AssignmentUserId id;
 
     @ManyToOne
-    @MapsId("adherentId")
-    private Adherent adherent;
+    @MapsId("userId")
+    private User user;
 
     @ManyToOne
     @MapsId("assignmentId")

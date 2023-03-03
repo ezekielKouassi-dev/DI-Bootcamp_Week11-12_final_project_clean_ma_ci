@@ -9,24 +9,19 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name="adherents")
+@Table(name = "processing_company")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Adherent {
+public class ProcessingCompany {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long adherentId;
-    private String lastName;
-    private String firstName;
-    private String email;
+    private Long processingCompanyId;
+    private String name;
     private String phone;
-    private String username;
-    private String password;
-    private String role;
+    private String email;
     private Date createDat;
     private Date updateDat;
-    private boolean status;
-    @OneToMany(mappedBy = "adherent", cascade = CascadeType.ALL)
-    private List<AdherentAssignment> adherentAssignments;
+    @OneToMany(mappedBy = "processingCompany", cascade = CascadeType.ALL)
+    private List<Assignment> assignmentList;
 }

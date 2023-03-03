@@ -3,13 +3,13 @@
   <persistence-unit name="di.learning_clean-ma-ci_jar_0.0.1-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>di.learning.clean.ma.ci.entity.Admin</class>
-    <class>di.learning.clean.ma.ci.entity.ProcessingCompanies</class>
+    <class>di.learning.clean.ma.ci.entity.ProcessingCompany</class>
     <class>di.learning.clean.ma.ci.entity.Locality</class>
     <class>di.learning.clean.ma.ci.entity.Assignments</class>
     <class>di.learning.clean.ma.ci.entity.Ranks</class>
     <class>di.learning.clean.ma.ci.entity.DropOffPoint</class>
     <class>di.learning.clean.ma.ci.entity.Adherent</class>
-    <class>di.learning.clean.ma.ci.entity.AdherentAssignment</class>
+    <class>di.learning.clean.ma.ci.entity.AssignmentUser</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/cleanmaci_db"/>
       <property name="javax.persistence.jdbc.user" value="postgres"/>

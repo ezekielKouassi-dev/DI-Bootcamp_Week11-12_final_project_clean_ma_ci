@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdherentAssignmentId implements Serializable {
-    private Long adherentId;
+public class AssignmentUserId implements Serializable {
+    private Long userId;
     private Long assignmentId;
 }
