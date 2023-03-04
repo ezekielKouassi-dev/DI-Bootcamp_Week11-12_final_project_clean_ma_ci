@@ -6,6 +6,10 @@ import di.learning.clean.ma.ci.entity.User;
 import di.learning.clean.ma.ci.repository.AdherentRepository;
 import di.learning.clean.ma.ci.repository.AssignmentUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -89,4 +93,10 @@ public class UserServiceImpl implements UserService {
         return "leave assignment failed";
 
     }
+
+    /*@Override
+    public ResponseEntity<Page<?>> fetchAllAssignmentByState(Pageable pageable, Sort sort) {
+        Page<AssignmentUser>
+        return null;
+    }*/
 }

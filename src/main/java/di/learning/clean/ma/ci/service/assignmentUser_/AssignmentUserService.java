@@ -5,5 +5,5 @@ import di.learning.clean.ma.ci.entity.AssignmentUserId;
 
 public interface AssignmentUserService {
 
-    public AssignmentUser fetchAssignmentUserById(AssignmentUserId assignmentUserId);
+    public String fetchAssignmentUserById(Long userId);
 }

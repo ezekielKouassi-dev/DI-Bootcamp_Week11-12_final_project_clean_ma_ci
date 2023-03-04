@@ -8,6 +8,10 @@ import di.learning.clean.ma.ci.error.AdherentNotFoundExceptionHandler;
 import di.learning.clean.ma.ci.service.adherent_.UserService;
 import di.learning.clean.ma.ci.service.assignment_.AssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -62,7 +66,7 @@ public class UserController {
         return userService.saveUser(user);
     }
 
-    // TODO: leave assignment
+    // TODO: leave assignment --->ok<---
     /*
          consist for the de user to revoke it he acceptation.
         my process to give leave assignment feature to the user is :
@@ -72,5 +76,14 @@ public class UserController {
     public String leaveAssignment(@PathVariable Long userId, @PathVariable Long assignmentId) {
         return userService.leaveAssignment(userId, assignmentId);
     }
+
+    // TODO : list of user assignment
+
+    /*@GetMapping()
+    public ResponseEntity<Page<?>> fetchAllAssignmentByState(
+            Pageable pageable,
+            @RequestParam(name = "sort", required = false) Sort sort) {
+        return userService.fetchAllAssignmentByState(pageable, sort);
+    }*/
 
 }

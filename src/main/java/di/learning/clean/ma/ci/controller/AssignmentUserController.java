@@ -1,12 +1,10 @@
 package di.learning.clean.ma.ci.controller;
-
-import di.learning.clean.ma.ci.entity.Assignment;
-import di.learning.clean.ma.ci.entity.AssignmentUser;
-import di.learning.clean.ma.ci.entity.AssignmentUserId;
 import di.learning.clean.ma.ci.service.adherent_.UserService;
 import di.learning.clean.ma.ci.service.assignmentUser_.AssignmentUserService;
 import di.learning.clean.ma.ci.service.assignment_.AssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,4 +18,15 @@ public class AssignmentUserController {
 
     @Autowired
     private AssignmentUserService assignmentUserService;
+
+    // TODO : list of completed, revoke, in progress assignments for a specific user
+    /*
+        1. get user id in path variable
+        2. paste user id in parameter of fetchAllUserAssignment
+     */
+    @GetMapping("/{id}")
+    public String fetchAllUserAssignment(@PathVariable("id") Long userId) {
+        return assignmentUserService.fetchAssignmentUserById(userId);
+    }
+
 }
