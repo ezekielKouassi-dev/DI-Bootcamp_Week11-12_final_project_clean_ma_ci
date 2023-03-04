@@ -1,5 +1,6 @@
 package di.learning.clean.ma.ci.repository;
 
+import di.learning.clean.ma.ci.entity.Assignment;
 import di.learning.clean.ma.ci.entity.AssignmentUser;
 import di.learning.clean.ma.ci.entity.AssignmentUserId;
 import di.learning.clean.ma.ci.entity.User;

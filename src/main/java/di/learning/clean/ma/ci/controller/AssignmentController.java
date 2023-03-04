@@ -33,4 +33,16 @@ public class AssignmentController {
     }
 
 
+    /**
+     * this endPoint is used for give all collaborator for a specific assignment
+     *
+     * @param assignmentId
+     * @return jsonObject
+     */
+    @GetMapping("/collaboratorAssignment/{id}")
+    public String fetchAllCollaborator(@PathVariable("id") Long assignmentId) {
+        return assignmentService.fetchAllCollaborator(assignmentId);
+    }
+
+
 }

@@ -1,8 +1,10 @@
 package di.learning.clean.ma.ci.service.assignmentUser_;
 
+import di.learning.clean.ma.ci.entity.Assignment;
 import di.learning.clean.ma.ci.entity.AssignmentUser;
 import di.learning.clean.ma.ci.entity.User;
 import di.learning.clean.ma.ci.repository.AdherentRepository;
+import di.learning.clean.ma.ci.repository.AssignmentRepository;
 import di.learning.clean.ma.ci.repository.AssignmentUserRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,6 +20,9 @@ public class AssignmentUserServiceImpl implements AssignmentUserService{
 
     @Autowired
     AdherentRepository adherentRepository;
+
+    @Autowired
+    AssignmentRepository assignmentRepository;
 
     @Override
     public String fetchAssignmentUserById(Long userId, String state) {
@@ -41,4 +46,5 @@ public class AssignmentUserServiceImpl implements AssignmentUserService{
 
         return jsonArray.toString();
     }
+
 }

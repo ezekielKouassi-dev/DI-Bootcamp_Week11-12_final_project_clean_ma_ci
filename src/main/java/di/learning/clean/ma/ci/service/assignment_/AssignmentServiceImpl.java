@@ -1,7 +1,10 @@
 package di.learning.clean.ma.ci.service.assignment_;
 
 import di.learning.clean.ma.ci.entity.Assignment;
+import di.learning.clean.ma.ci.entity.AssignmentUser;
 import di.learning.clean.ma.ci.repository.AssignmentRepository;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,5 +51,19 @@ public class AssignmentServiceImpl implements AssignmentService{
         }
 
         return assignmentRepository.save(ass);
+    }
+
+    @Override
+    public String fetchAllCollaborator(Long assignmentId) {
+        Assignment assignment = assignmentRepository.findById(assignmentId).get();
+        JSONObject jsonObject;
+        JSONArray jsonArray = new JSONArray();
+        for(AssignmentUser assignmentUser : assignment.getAssignmentUsers()) {
+            jsonObject = new JSONObject();
+            jsonObject.put("id", assignmentUser.getUser().getAdherentId());
+            jsonObject.put("fullName", assignmentUser.getUser().getFirstName() + " " + assignmentUser.getUser().getLastName());
+            jsonArray.put(jsonObject);
+        }
+        return jsonArray.toString();
     }
 }
