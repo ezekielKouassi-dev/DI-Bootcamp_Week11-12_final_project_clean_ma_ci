@@ -21,5 +21,5 @@ public interface UserService {
 
     public String leaveAssignment(Long userId, Long assignmentId);
 
-    //public ResponseEntity<Page<?>> fetchAllAssignmentByState(Pageable pageable, Sort sort);
+    //public ResponseEntity<Page<?>> fetchAllAssignmentByState(Pageable , Sort );
 }

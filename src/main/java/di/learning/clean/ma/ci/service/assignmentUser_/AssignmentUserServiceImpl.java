@@ -20,9 +20,9 @@ public class AssignmentUserServiceImpl implements AssignmentUserService{
     AdherentRepository adherentRepository;
 
     @Override
-    public String fetchAssignmentUserById(Long userId) {
+    public String fetchAssignmentUserById(Long userId, String state) {
         User user = adherentRepository.findById(userId).get();
-        List<AssignmentUser> assignmentUsers = assignmentUserRepository.findAllByUserAndAndState(user, "leave");
+        List<AssignmentUser> assignmentUsers = assignmentUserRepository.findAllByUserAndAndState(user, state);
         JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
 

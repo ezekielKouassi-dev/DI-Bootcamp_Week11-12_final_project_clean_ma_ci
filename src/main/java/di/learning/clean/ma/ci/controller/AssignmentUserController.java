@@ -24,9 +24,9 @@ public class AssignmentUserController {
         1. get user id in path variable
         2. paste user id in parameter of fetchAllUserAssignment
      */
-    @GetMapping("/{id}")
-    public String fetchAllUserAssignment(@PathVariable("id") Long userId) {
-        return assignmentUserService.fetchAssignmentUserById(userId);
+    @GetMapping("/{id}/{state}")
+    public String fetchAllUserAssignment(@PathVariable("id") Long userId, @PathVariable("state") String state) {
+        return assignmentUserService.fetchAssignmentUserById(userId, state);
     }
 
 }
