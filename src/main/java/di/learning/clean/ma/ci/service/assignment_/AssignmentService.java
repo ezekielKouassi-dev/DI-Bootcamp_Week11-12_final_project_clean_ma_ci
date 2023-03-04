@@ -14,4 +14,5 @@ public interface AssignmentService {
 
     public Assignment updateAssignment(Long assignmentId, Assignment assignment);
 
+    public String fetchAllCollaborator(Long assignmentId);
 }

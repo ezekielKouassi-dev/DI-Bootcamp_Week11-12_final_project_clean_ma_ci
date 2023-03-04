@@ -26,5 +26,6 @@ public class AssignmentUser {
     @MapsId("assignmentId")
     private Assignment assignment;
 
+    // FIXME : update the default value of state
     private String state = "in progress";
 }

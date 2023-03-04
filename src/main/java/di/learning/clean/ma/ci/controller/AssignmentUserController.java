@@ -3,8 +3,6 @@ import di.learning.clean.ma.ci.service.adherent_.UserService;
 import di.learning.clean.ma.ci.service.assignmentUser_.AssignmentUserService;
 import di.learning.clean.ma.ci.service.assignment_.AssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
