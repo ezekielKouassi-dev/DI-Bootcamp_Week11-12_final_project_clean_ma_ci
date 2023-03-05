@@ -1,4 +1,4 @@
-package di.learning.clean.ma.ci.service.locality;
+package di.learning.clean.ma.ci.service.locality_;
 
 import di.learning.clean.ma.ci.entity.Locality;
 import di.learning.clean.ma.ci.repository.AdminRepository;

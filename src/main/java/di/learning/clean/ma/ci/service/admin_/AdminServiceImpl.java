@@ -5,7 +5,9 @@ import di.learning.clean.ma.ci.entity.Locality;
 import di.learning.clean.ma.ci.entity.PointOfDrop;
 import di.learning.clean.ma.ci.entity.Ranks;
 import di.learning.clean.ma.ci.repository.AdminRepository;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -64,5 +66,14 @@ public class AdminServiceImpl implements AdminService{
     public List<PointOfDrop> fetchAllDropOfPoint(Long pointOfDropId) {
         // TODO : fetchAllDropOfPoint function
         return null;
+    }
+
+    @Override
+    public String saveAdmin(Admin admin) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("status", HttpStatus.OK.value());
+        jsonObject.put("message", "success");
+        adminRepository.save(admin);
+        return jsonObject.toString();
     }
 }

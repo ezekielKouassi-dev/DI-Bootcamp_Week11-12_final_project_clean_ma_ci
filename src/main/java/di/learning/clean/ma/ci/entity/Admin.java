@@ -1,5 +1,8 @@
 package di.learning.clean.ma.ci.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +16,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "adminId")
 public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +29,7 @@ public class Admin {
     private Date createDat;
     private Date updateDat;
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
+    @JsonIdentityReference(alwaysAsId = true)
     private List<Locality> localityList;
 
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)

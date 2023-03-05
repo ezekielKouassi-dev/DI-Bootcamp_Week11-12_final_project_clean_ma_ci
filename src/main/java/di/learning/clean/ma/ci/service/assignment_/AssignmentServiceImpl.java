@@ -8,6 +8,7 @@ import di.learning.clean.ma.ci.repository.ProcessingCompanyRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -66,15 +67,24 @@ public class AssignmentServiceImpl implements AssignmentService{
 
     @Override
     public String fetchAllCollaborator(Long assignmentId) {
-        Assignment assignment = assignmentRepository.findById(assignmentId).get();
         JSONObject jsonObject;
         JSONArray jsonArray = new JSONArray();
-        for(AssignmentUser assignmentUser : assignment.getAssignmentUsers()) {
+        if(!assignmentRepository.findById(assignmentId).isPresent()) {
+            jsonObject = new JSONObject();
+            jsonObject.put("status", HttpStatus.NOT_FOUND.value());
+            jsonObject.put("message", "resources not found");
+            return jsonObject.toString();
+        }
+        for(AssignmentUser assignmentUser : assignmentRepository.findById(assignmentId).get().getAssignmentUsers()) {
             jsonObject = new JSONObject();
             jsonObject.put("id", assignmentUser.getUser().getAdherentId());
             jsonObject.put("fullName", assignmentUser.getUser().getFirstName() + " " + assignmentUser.getUser().getLastName());
             jsonArray.put(jsonObject);
         }
-        return jsonArray.toString();
+        jsonObject = new JSONObject();
+        jsonObject.put("status", HttpStatus.OK.value());
+        jsonObject.put("message", "success");
+        jsonObject.put("data", jsonArray);
+        return jsonObject.toString();
     }
 }
