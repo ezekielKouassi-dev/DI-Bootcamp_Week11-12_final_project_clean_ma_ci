@@ -1,5 +1,6 @@
 package di.learning.clean.ma.ci.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,8 +21,9 @@ public class ProcessingCompany {
     private String name;
     private String phone;
     private String email;
-    private Date createDat;
+    private Date createDat = new Date();
     private Date updateDat;
     @OneToMany(mappedBy = "processingCompany", cascade = CascadeType.ALL)
+    @JsonIdentityReference(alwaysAsId = true)
     private List<Assignment> assignmentList;
 }

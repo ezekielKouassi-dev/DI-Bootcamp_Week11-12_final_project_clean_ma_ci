@@ -22,9 +22,9 @@ public class AssignmentController {
         return assignmentService.fetchAssignment(assignmentId);
     }
 
-    @PostMapping()
-    public String saveAssignment(@RequestBody Assignment assignment) {
-        return assignmentService.saveAssignment(assignment);
+    @PostMapping("/processingCompany/{id}")
+    public String saveAssignment(@RequestBody Assignment assignment, @PathVariable("id") Long processingCompanyId) {
+        return assignmentService.saveAssignment(assignment, processingCompanyId);
     }
 
     @PutMapping("/{id}")
