@@ -10,7 +10,7 @@ public interface AssignmentService {
 
     public Assignment fetchAssignment(Long assignmentId);
 
-    public String saveAssignment(Assignment assignment);
+    public String saveAssignment(Assignment assignment, Long processingCompanyId);
 
     public Assignment updateAssignment(Long assignmentId, Assignment assignment);
 

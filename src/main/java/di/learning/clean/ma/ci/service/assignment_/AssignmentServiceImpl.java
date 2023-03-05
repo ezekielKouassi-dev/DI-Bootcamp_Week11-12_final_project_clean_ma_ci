@@ -2,7 +2,9 @@ package di.learning.clean.ma.ci.service.assignment_;
 
 import di.learning.clean.ma.ci.entity.Assignment;
 import di.learning.clean.ma.ci.entity.AssignmentUser;
+import di.learning.clean.ma.ci.entity.ProcessingCompany;
 import di.learning.clean.ma.ci.repository.AssignmentRepository;
+import di.learning.clean.ma.ci.repository.ProcessingCompanyRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,9 @@ import java.util.Optional;
 public class AssignmentServiceImpl implements AssignmentService{
     @Autowired
     private AssignmentRepository assignmentRepository;
+
+    @Autowired
+    private ProcessingCompanyRepository processingCompanyRepository;
     @Override
     public List<Assignment> fetchAssignments() {
         return assignmentRepository.findAll();
@@ -31,7 +36,13 @@ public class AssignmentServiceImpl implements AssignmentService{
     }
 
     @Override
-    public String saveAssignment(Assignment assignment) {
+    public String saveAssignment(Assignment assignment, Long processingCompanyId) {
+        Optional<ProcessingCompany> processingCompany = processingCompanyRepository.findById(processingCompanyId);
+
+        if(!processingCompany.isPresent()) {
+            return "registration failed this processing company is not found ";
+        }
+        assignment.setProcessingCompany(processingCompany.get());
         assignmentRepository.save(assignment);
         return "successfully register assignment";
     }
