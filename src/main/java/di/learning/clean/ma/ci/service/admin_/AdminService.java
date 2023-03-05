@@ -15,4 +15,6 @@ public interface AdminService {
     public List<Ranks> fetchAllRank(Long ranksId);
 
     public List<PointOfDrop> fetchAllDropOfPoint(Long pointOfDropId);
+
+    public String saveAdmin(Admin admin);
 }

@@ -6,10 +6,7 @@ import di.learning.clean.ma.ci.entity.PointOfDrop;
 import di.learning.clean.ma.ci.entity.Ranks;
 import di.learning.clean.ma.ci.service.admin_.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -57,5 +54,10 @@ public class AdminController {
     @GetMapping("/{id}/pointOfDrop")
     public List<PointOfDrop> fetchAllDropOfPoint(@PathVariable("id") Long pointOfDropId) {
         return adminService.fetchAllDropOfPoint(pointOfDropId);
+    }
+
+    @PostMapping()
+    public String saveAdmin(@RequestBody Admin admin) {
+        return adminService.saveAdmin(admin);
     }
 }

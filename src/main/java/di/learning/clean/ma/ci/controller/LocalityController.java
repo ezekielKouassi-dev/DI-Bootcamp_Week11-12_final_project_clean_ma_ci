@@ -1,7 +1,7 @@
 package di.learning.clean.ma.ci.controller;
 
 import di.learning.clean.ma.ci.entity.Locality;
-import di.learning.clean.ma.ci.service.locality.LocalityService;
+import di.learning.clean.ma.ci.service.locality_.LocalityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
