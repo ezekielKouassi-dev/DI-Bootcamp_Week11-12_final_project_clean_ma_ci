@@ -50,6 +50,8 @@ public class UserController {
 
     @PostMapping("/{userId}/assignments/{assignmentId}")
     public String acceptAssignment(@PathVariable Long userId, @PathVariable Long assignmentId) {
+
+        // TODO : put into service user this instruction
         User user = userService.fetchUserById(userId);
         Assignment assignment = assignmentService.fetchAssignment(assignmentId);
         assignment.setNumberOfAcceptation(assignment.getNumberOfAcceptation() + 1);

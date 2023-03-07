@@ -72,6 +72,7 @@ public class ProcessingCompanyServiceImpl implements ProcessingCompanyService{
      */
     @Override
     public String updateProcessingCompany(Long processingCompanyId, ProcessingCompany processingCompany) {
+        // TODO : add verification to processing company
         ProcessingCompany prc = processingCompanyRepository.findById(processingCompanyId).get();
 
         if(Objects.nonNull(prc.getName()) &&

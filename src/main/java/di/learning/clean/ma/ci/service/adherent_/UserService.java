@@ -1,6 +1,7 @@
 package di.learning.clean.ma.ci.service.adherent_;
 
 import di.learning.clean.ma.ci.entity.User;
+import di.learning.clean.ma.ci.model.UserPayload;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,6 +21,8 @@ public interface UserService {
     public String deleteUserById(Long userId);
 
     public String leaveAssignment(Long userId, Long assignmentId);
+
+    public List<?> register(UserPayload userPayload);
 
     //public ResponseEntity<Page<?>> fetchAllAssignmentByState(Pageable , Sort );
 }

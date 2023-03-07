@@ -3,6 +3,7 @@ package di.learning.clean.ma.ci.service.adherent_;
 import di.learning.clean.ma.ci.entity.AssignmentUser;
 import di.learning.clean.ma.ci.entity.AssignmentUserId;
 import di.learning.clean.ma.ci.entity.User;
+import di.learning.clean.ma.ci.model.UserPayload;
 import di.learning.clean.ma.ci.repository.AdherentRepository;
 import di.learning.clean.ma.ci.repository.AssignmentUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,6 +93,11 @@ public class UserServiceImpl implements UserService {
         }
         return "leave assignment failed";
 
+    }
+
+    @Override
+    public List<?> register(UserPayload userPayload) {
+        return null;
     }
 
     /*@Override
