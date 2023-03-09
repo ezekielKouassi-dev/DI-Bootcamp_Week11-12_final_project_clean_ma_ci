@@ -15,8 +15,13 @@ import java.util.List;
 public class AuthController {
     @Autowired
     private UserService userService;
-    @PostMapping("login/")
-    public List<?> register(@RequestBody UserPayload userPayload) {
+    @PostMapping("signUp/")
+    public String register(@RequestBody UserPayload userPayload) {
         return userService.register(userPayload);
+    }
+
+    @PostMapping("signIn/")
+    public String login(@RequestBody UserPayload userPayload) {
+        return userService.login(userPayload);
     }
 }

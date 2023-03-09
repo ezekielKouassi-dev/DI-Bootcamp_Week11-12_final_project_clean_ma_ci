@@ -22,7 +22,9 @@ public interface UserService {
 
     public String leaveAssignment(Long userId, Long assignmentId);
 
-    public List<?> register(UserPayload userPayload);
+    public String register(UserPayload userPayload);
+
+    public String login(UserPayload userPayload);
 
     //public ResponseEntity<Page<?>> fetchAllAssignmentByState(Pageable , Sort );
 }

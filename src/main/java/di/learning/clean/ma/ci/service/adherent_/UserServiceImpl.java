@@ -6,10 +6,12 @@ import di.learning.clean.ma.ci.entity.User;
 import di.learning.clean.ma.ci.model.UserPayload;
 import di.learning.clean.ma.ci.repository.AdherentRepository;
 import di.learning.clean.ma.ci.repository.AssignmentUserRepository;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -96,13 +98,47 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<?> register(UserPayload userPayload) {
-        return null;
+    public String register(UserPayload userPayload) {
+        User user = new User();
+        user.setLastName(userPayload.getLastName());
+        user.setFirstName(userPayload.getFirstName());
+        user.setUsername(userPayload.getIdentifier());
+        user.setEmail(userPayload.getEmail());
+        user.setRole(userPayload.getRole());
+        user.setPassword(userPayload.getPassword());
+        adherentRepository.save(user);
+
+        /*
+           formation of json
+        */
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("status", HttpStatus.OK.value());
+        jsonObject.put("message", "success");
+        return jsonObject.toString();
     }
 
-    /*@Override
-    public ResponseEntity<Page<?>> fetchAllAssignmentByState(Pageable pageable, Sort sort) {
-        Page<AssignmentUser>
-        return null;
-    }*/
+    @Override
+    public String login(UserPayload userPayload) {
+        Optional<User> user = adherentRepository.findUserByUsernameIgnoreCase(userPayload.getIdentifier());
+        JSONObject jsonObject;
+        if(!user.isPresent()) {
+            jsonObject = new JSONObject();
+            jsonObject.put("status", HttpStatus.NOT_FOUND.value());
+            jsonObject.put("message", "user don't be found");
+            return jsonObject.toString();
+        }
+
+        if(!userPayload.getPassword().equals(user.get().getPassword())) {
+            jsonObject = new JSONObject();
+            jsonObject.put("status", HttpStatus.NOT_FOUND.value());
+            jsonObject.put("message", "identifier or password didn't match");
+            return jsonObject.toString();
+        }
+
+        jsonObject = new JSONObject();
+        jsonObject.put("status", HttpStatus.OK.value());
+        jsonObject.put("message", "login success");
+        return jsonObject.toString();
+    }
 }
