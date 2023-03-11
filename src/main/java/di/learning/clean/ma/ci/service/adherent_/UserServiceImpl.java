@@ -120,16 +120,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String login(UserPayload userPayload) {
-        Optional<User> user = adherentRepository.findUserByUsernameIgnoreCase(userPayload.getIdentifier());
+        Optional<User> user = adherentRepository.findUserByUsernameIgnoreCaseAndPassword(userPayload.getIdentifier(), userPayload.getPassword());
         JSONObject jsonObject;
         if(!user.isPresent()) {
-            jsonObject = new JSONObject();
-            jsonObject.put("status", HttpStatus.NOT_FOUND.value());
-            jsonObject.put("message", "user don't be found");
-            return jsonObject.toString();
-        }
-
-        if(!userPayload.getPassword().equals(user.get().getPassword())) {
             jsonObject = new JSONObject();
             jsonObject.put("status", HttpStatus.NOT_FOUND.value());
             jsonObject.put("message", "identifier or password didn't match");
@@ -138,6 +131,8 @@ public class UserServiceImpl implements UserService {
 
         jsonObject = new JSONObject();
         jsonObject.put("status", HttpStatus.OK.value());
+        jsonObject.put("id", user.get().getAdherentId());
+        jsonObject.put("role", user.get().getRole());
         jsonObject.put("message", "login success");
         return jsonObject.toString();
     }

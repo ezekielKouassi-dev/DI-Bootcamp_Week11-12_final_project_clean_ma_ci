@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface AdherentRepository extends JpaRepository<User, Long> {
-    public Optional<User> findUserByUsernameIgnoreCase(String username);
+    public Optional<User> findUserByUsernameIgnoreCaseAndPassword(String username, String password);
 }
