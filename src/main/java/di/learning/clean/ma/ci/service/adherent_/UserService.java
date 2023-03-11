@@ -14,7 +14,7 @@ public interface UserService {
 
     public User fetchUserById(Long userId);
 
-    public String saveUser(User user);
+    public String saveUser(Long userId, Long assignmentId);
 
     public User updateUser(Long userId, User user);
 

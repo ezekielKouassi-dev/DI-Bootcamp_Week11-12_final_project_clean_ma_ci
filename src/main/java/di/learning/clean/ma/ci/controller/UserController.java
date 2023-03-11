@@ -34,11 +34,6 @@ public class UserController {
         return userService.fetchUserById(userId);
     }
 
-    @PostMapping()
-    public String saveAdherent(@RequestBody User User) {
-        return userService.saveUser(User);
-    }
-
     @PutMapping("/{id}")
     public User updateAdherent(@PathVariable("id") Long userId, @RequestBody User User) {
         return userService.updateUser(userId, User);
@@ -53,40 +48,14 @@ public class UserController {
     public String acceptAssignment(@PathVariable Long userId, @PathVariable Long assignmentId) {
 
         // TODO : put into service user this instruction
-        User user = userService.fetchUserById(userId);
-        Assignment assignment = assignmentService.fetchAssignment(assignmentId);
-        assignment.setNumberOfAcceptation(assignment.getNumberOfAcceptation() + 1);
-        AssignmentUser assignmentUser = new AssignmentUser();
-        AssignmentUserId assignmentUserId = new AssignmentUserId();
-        assignmentUserId.setUserId(userId);
-        assignmentUserId.setAssignmentId(assignmentId);
-        assignmentUser.setId(assignmentUserId);
-        assignmentUser.setUser(user);
-        assignmentUser.setAssignment(assignment);
-        user.getAssignmentUsers().add(assignmentUser);
-        assignment.getAssignmentUsers().add(assignmentUser);
-
-        return userService.saveUser(user);
+        return userService.saveUser(userId, assignmentId);
     }
 
-    // TODO: leave assignment --->ok<---
-    /*
-         consist for the de user to revoke it he acceptation.
-        my process to give leave assignment feature to the user is :
-            - just change assignment status
-     */
     @PatchMapping("/{userId}/assignments/{assignmentId}")
     public String leaveAssignment(@PathVariable Long userId, @PathVariable Long assignmentId) {
         return userService.leaveAssignment(userId, assignmentId);
     }
 
     // TODO : list of user assignment
-
-    /*@GetMapping()
-    public ResponseEntity<Page<?>> fetchAllAssignmentByState(
-            Pageable pageable,
-            @RequestParam(name = "sort", required = false) Sort sort) {
-        return userService.fetchAllAssignmentByState(pageable, sort);
-    }*/
 
 }

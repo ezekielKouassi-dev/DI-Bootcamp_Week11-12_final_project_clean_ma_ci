@@ -9,12 +9,14 @@ import di.learning.clean.ma.ci.repository.AssignmentUserRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class AssignmentUserServiceImpl implements AssignmentUserService{
+public class AssignmentUserServiceImpl implements AssignmentUserService {
     @Autowired
     AssignmentUserRepository assignmentUserRepository;
 
@@ -26,25 +28,30 @@ public class AssignmentUserServiceImpl implements AssignmentUserService{
 
     @Override
     public String fetchAssignmentUserById(Long userId, String state) {
-        User user = adherentRepository.findById(userId).get();
-        List<AssignmentUser> assignmentUsers = assignmentUserRepository.findAllByUserAndAndState(user, state);
-        JSONObject jsonObject = new JSONObject();
+        Optional<User> user = adherentRepository.findById(userId);
+        JSONObject jsonObject;
         JSONArray jsonArray = new JSONArray();
+        if (!user.isPresent()) {
+            jsonObject = new JSONObject();
+            jsonObject.put("status", HttpStatus.NOT_FOUND.value());
+            jsonObject.put("message", "user dont' be found");
+            return jsonObject.toString();
+        }
+        List<AssignmentUser> assignmentUsers = assignmentUserRepository.findAllByUserAndAndState(user.get(), state);
 
-        /*
-            this loop below is used to render list of assignments for a specific user using json format
-         */
-
-        for(AssignmentUser el : assignmentUsers){
-            jsonObject.put("id",el.getId());
+        for (AssignmentUser el : assignmentUsers) {
+            jsonObject = new JSONObject();
+            jsonObject.put("assignmentId", el.getId().getAssignmentId());
             jsonObject.put("assignmentTitle", el.getAssignment().getTitle());
             jsonObject.put("assignmentDescription", el.getAssignment().getDescription());
             jsonObject.put("isCompleted", el.getState());
             jsonArray.put(jsonObject);
-            jsonObject = new JSONObject();
         }
-
-        return jsonArray.toString();
+        jsonObject = new JSONObject();
+        jsonObject.put("status", HttpStatus.OK.value());
+        jsonObject.put("message", "success");
+        jsonObject.put("data", jsonArray);
+        return jsonObject.toString();
     }
 
 }

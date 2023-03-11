@@ -1,10 +1,12 @@
 package di.learning.clean.ma.ci.service.adherent_;
 
+import di.learning.clean.ma.ci.entity.Assignment;
 import di.learning.clean.ma.ci.entity.AssignmentUser;
 import di.learning.clean.ma.ci.entity.AssignmentUserId;
 import di.learning.clean.ma.ci.entity.User;
 import di.learning.clean.ma.ci.model.UserPayload;
 import di.learning.clean.ma.ci.repository.AdherentRepository;
+import di.learning.clean.ma.ci.repository.AssignmentRepository;
 import di.learning.clean.ma.ci.repository.AssignmentUserRepository;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     AdherentRepository adherentRepository;
     @Autowired
+    AssignmentRepository assignmentRepository;
+    @Autowired
     AssignmentUserRepository assignmentUserRepository;
     @Override
     public List<User> fetchAllUser() {
@@ -39,9 +43,34 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String saveUser(User User) {
-        adherentRepository.save(User);
-        return "successfully save User";
+    public String saveUser(Long userId, Long assignmentId) {
+        Optional<User> user = adherentRepository.findById(userId);
+        Optional<Assignment> assignment = assignmentRepository.findById(assignmentId);
+        JSONObject jsonObject;
+
+        if(!user.isPresent() || !assignment.isPresent()) {
+            jsonObject = new JSONObject();
+            jsonObject.put("status", HttpStatus.NOT_FOUND.value());
+            jsonObject.put("message", "user or assignment don't be found");
+            return jsonObject.toString();
+        }
+
+        assignment.get().setNumberOfAcceptation(assignment.get().getNumberOfAcceptation() + 1);
+        AssignmentUser assignmentUser = new AssignmentUser();
+        AssignmentUserId assignmentUserId = new AssignmentUserId();
+        assignmentUserId.setUserId(userId);
+        assignmentUserId.setAssignmentId(assignmentId);
+        assignmentUser.setId(assignmentUserId);
+        assignmentUser.setUser(user.get());
+        assignmentUser.setAssignment(assignment.get());
+        user.get().getAssignmentUsers().add(assignmentUser);
+        assignment.get().getAssignmentUsers().add(assignmentUser);
+        adherentRepository.save(user.get());
+
+        jsonObject = new JSONObject();
+        jsonObject.put("status", HttpStatus.OK.value());
+        jsonObject.put("message", "Congrats! your work begin now!!!");
+        return jsonObject.toString();
     }
 
     /*
@@ -87,13 +116,21 @@ public class UserServiceImpl implements UserService {
     public String leaveAssignment(Long userId, Long assignmentId) {
         AssignmentUserId assignmentUserId = new AssignmentUserId(userId, assignmentId);
         Optional<AssignmentUser> assignmentUser = assignmentUserRepository.findById(assignmentUserId);
+        JSONObject jsonObject;
         if(assignmentUser.isPresent()) {
             // throw new exception
             assignmentUser.get().setState("leave");
             assignmentUserRepository.save(assignmentUser.get());
-            return "assignment has been leave";
+            jsonObject = new JSONObject();
+            jsonObject.put("status", HttpStatus.OK.value());
+            jsonObject.put("message", "assignment has been leave");
+            return jsonObject.toString();
         }
-        return "leave assignment failed";
+
+        jsonObject = new JSONObject();
+        jsonObject.put("status", HttpStatus.NOT_FOUND.value());
+        jsonObject.put("message", "leave assignment failed");
+        return jsonObject.toString();
 
     }
 

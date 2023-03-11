@@ -12,4 +12,5 @@ import java.util.List;
 @Repository
 public interface AssignmentUserRepository extends JpaRepository<AssignmentUser, AssignmentUserId> {
     public List<AssignmentUser> findAllByUserAndAndState(User user, String state);
+    public List<AssignmentUser> findAssignmentUserByUser(User user);
 }

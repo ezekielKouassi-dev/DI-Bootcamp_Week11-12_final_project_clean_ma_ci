@@ -45,5 +45,14 @@ public class AssignmentController {
         return assignmentService.fetchAllCollaborator(assignmentId);
     }
 
+    @GetMapping("/available/user/{id}")
+    public String fetchAvailableAssignments(@PathVariable("id") Long userId,
+                                            @RequestParam(name = "start", defaultValue = "0", required = false) int start,
+                                            @RequestParam(name = "length", defaultValue = "10", required = false) int limit,
+                                            @RequestParam(name = "search", required = false) String search_value
+    ) {
+        return assignmentService.fetchAvailableAssignments(userId, start, limit, search_value);
+    }
+
 
 }
