@@ -23,9 +23,11 @@ public class Admin {
     private Long adminId;
     private String lastName;
     private String firstName;
+    private String userName;
     private String password;
     private String email;
     private String phone;
+    private String role = "ADMIN";
     private Date createDat;
     private Date updateDat;
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
@@ -37,4 +39,7 @@ public class Admin {
 
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
     private List<PointOfDrop> pointOfDropList;
+
+    @OneToMany(mappedBy = "admin")
+    private List<ProcessingCompany> processingCompanylist;
 }

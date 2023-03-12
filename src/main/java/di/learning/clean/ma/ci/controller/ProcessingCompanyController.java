@@ -44,9 +44,9 @@ public class ProcessingCompanyController {
      * @param processingCompany
      * @return
      */
-    @PostMapping()
-    public String saveProcessingCompany(@RequestBody ProcessingCompany processingCompany) {
-        return processingCompanyService.saveProcessingCompany(processingCompany);
+    @PostMapping("/admin/{id}")
+    public String saveProcessingCompany(@RequestBody ProcessingCompany processingCompany, @PathVariable("id") Long adminId) {
+        return processingCompanyService.saveProcessingCompany(processingCompany, adminId);
     }
 
     /**

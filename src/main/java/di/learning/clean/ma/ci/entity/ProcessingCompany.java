@@ -21,9 +21,13 @@ public class ProcessingCompany {
     private String name;
     private String phone;
     private String email;
+    private String userName;
+    private String password;
     private Date createDat = new Date();
     private Date updateDat;
     @OneToMany(mappedBy = "processingCompany", cascade = CascadeType.ALL)
     @JsonIdentityReference(alwaysAsId = true)
     private List<Assignment> assignmentList;
+    @ManyToOne
+    private Admin admin;
 }

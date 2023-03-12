@@ -1,10 +1,14 @@
 package di.learning.clean.ma.ci.service.processingcompany_;
 
+import di.learning.clean.ma.ci.entity.Admin;
 import di.learning.clean.ma.ci.entity.Assignment;
 import di.learning.clean.ma.ci.entity.ProcessingCompany;
 import di.learning.clean.ma.ci.entity.User;
+import di.learning.clean.ma.ci.repository.AdminRepository;
 import di.learning.clean.ma.ci.repository.ProcessingCompanyRepository;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +19,9 @@ import java.util.Optional;
 public class ProcessingCompanyServiceImpl implements ProcessingCompanyService{
     @Autowired
     private ProcessingCompanyRepository processingCompanyRepository;
+
+    @Autowired
+    private AdminRepository adminRepository;
 
     /**
      *
@@ -46,9 +53,23 @@ public class ProcessingCompanyServiceImpl implements ProcessingCompanyService{
      * @return
      */
     @Override
-    public String saveProcessingCompany(ProcessingCompany processingCompany) {
+    public String saveProcessingCompany(ProcessingCompany processingCompany, Long adminId) {
+        Optional<Admin> admin = adminRepository.findById(adminId);
+        JSONObject jsonObject;
+
+        if(!admin.isPresent()) {
+            jsonObject = new JSONObject();
+            jsonObject.put("status", HttpStatus.NOT_FOUND.value());
+            jsonObject.put("message", "your session is out");
+            return jsonObject.toString();
+        }
+        processingCompany.setAdmin(admin.get());
         processingCompanyRepository.save(processingCompany);
-        return "successfully save processing company";
+
+        jsonObject = new JSONObject();
+        jsonObject.put("status", HttpStatus.OK.value());
+        jsonObject.put("message", "successfully save processing company");
+        return jsonObject.toString();
     }
 
     /**

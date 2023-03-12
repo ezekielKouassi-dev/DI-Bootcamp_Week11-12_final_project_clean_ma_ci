@@ -28,7 +28,7 @@ public class User {
     private Date createDat;
     private Date updateDat;
     private boolean status;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     @JsonIdentityReference(alwaysAsId = true)
     private List<AssignmentUser> assignmentUsers;
     @ManyToOne

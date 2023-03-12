@@ -10,7 +10,7 @@ public interface ProcessingCompanyService {
 
     public ProcessingCompany fetchProcessingCompany(Long processingCompanyId);
 
-    public String saveProcessingCompany(ProcessingCompany processingCompany);
+    public String saveProcessingCompany(ProcessingCompany processingCompany, Long adminId);
 
     public String deleteProcessingCompany(Long processingCompanyId);
 

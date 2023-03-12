@@ -1,11 +1,9 @@
 package di.learning.clean.ma.ci.service.adherent_;
 
-import di.learning.clean.ma.ci.entity.Assignment;
-import di.learning.clean.ma.ci.entity.AssignmentUser;
-import di.learning.clean.ma.ci.entity.AssignmentUserId;
-import di.learning.clean.ma.ci.entity.User;
+import di.learning.clean.ma.ci.entity.*;
 import di.learning.clean.ma.ci.model.UserPayload;
 import di.learning.clean.ma.ci.repository.AdherentRepository;
+import di.learning.clean.ma.ci.repository.AdminRepository;
 import di.learning.clean.ma.ci.repository.AssignmentRepository;
 import di.learning.clean.ma.ci.repository.AssignmentUserRepository;
 import org.json.JSONObject;
@@ -29,6 +27,9 @@ public class UserServiceImpl implements UserService {
     AssignmentRepository assignmentRepository;
     @Autowired
     AssignmentUserRepository assignmentUserRepository;
+
+    @Autowired
+    AdminRepository adminRepository;
     @Override
     public List<User> fetchAllUser() {
         return adherentRepository.findAll();
@@ -158,11 +159,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public String login(UserPayload userPayload) {
         Optional<User> user = adherentRepository.findUserByUsernameIgnoreCaseAndPassword(userPayload.getIdentifier(), userPayload.getPassword());
+        Optional<Admin> admin = adminRepository.findAdminByUserNameAndPassword(userPayload.getIdentifier(), userPayload.getPassword());
         JSONObject jsonObject;
         if(!user.isPresent()) {
+            if(!admin.isPresent()) {
+                jsonObject = new JSONObject();
+                jsonObject.put("status", HttpStatus.NOT_FOUND.value());
+                jsonObject.put("message", "identifier or password didn't match");
+                return jsonObject.toString();
+            }
             jsonObject = new JSONObject();
-            jsonObject.put("status", HttpStatus.NOT_FOUND.value());
-            jsonObject.put("message", "identifier or password didn't match");
+            jsonObject.put("status", HttpStatus.OK.value());
+            jsonObject.put("id", admin.get().getAdminId());
+            jsonObject.put("role", admin.get().getRole());
+            jsonObject.put("message", "login success");
             return jsonObject.toString();
         }
 
@@ -172,5 +182,6 @@ public class UserServiceImpl implements UserService {
         jsonObject.put("role", user.get().getRole());
         jsonObject.put("message", "login success");
         return jsonObject.toString();
+
     }
 }
