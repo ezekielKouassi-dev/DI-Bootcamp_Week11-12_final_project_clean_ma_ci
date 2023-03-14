@@ -20,7 +20,7 @@ public class ProcessingCompanyController {
      * @return
      */
     @GetMapping()
-    public List<ProcessingCompany> fetchAllProcessingCompanies() {
+    public String fetchAllProcessingCompanies() {
         return processingCompanyService.fetchAllProcessingCompanies();
     }
 

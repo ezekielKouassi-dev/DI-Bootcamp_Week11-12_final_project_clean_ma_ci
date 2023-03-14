@@ -14,7 +14,7 @@ public class LocalityController {
     @Autowired
     private LocalityService localityService;
     @GetMapping()
-    public List<Locality> fetchAllLocality() {
+    public String fetchAllLocality() {
         return localityService.fetchAllLocality();
     }
 

@@ -5,7 +5,7 @@ import di.learning.clean.ma.ci.entity.Locality;
 import java.util.List;
 
 public interface LocalityService {
-    public List<Locality> fetchAllLocality();
+    public String fetchAllLocality();
 
     public Locality fetchLocalityById(Long localityId);
 

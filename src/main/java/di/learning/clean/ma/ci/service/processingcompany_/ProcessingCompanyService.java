@@ -6,7 +6,7 @@ import di.learning.clean.ma.ci.entity.ProcessingCompany;
 import java.util.List;
 
 public interface ProcessingCompanyService {
-    public List<ProcessingCompany> fetchAllProcessingCompanies();
+    String fetchAllProcessingCompanies();
 
     public ProcessingCompany fetchProcessingCompany(Long processingCompanyId);
 

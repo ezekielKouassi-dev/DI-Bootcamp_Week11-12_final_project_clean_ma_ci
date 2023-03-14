@@ -3,7 +3,10 @@ package di.learning.clean.ma.ci.service.locality_;
 import di.learning.clean.ma.ci.entity.Locality;
 import di.learning.clean.ma.ci.repository.AdminRepository;
 import di.learning.clean.ma.ci.repository.LocalityRepository;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +19,21 @@ public class LocalityServiceImpl implements LocalityService{
     @Autowired
     private AdminRepository adminRepository;
     @Override
-    public List<Locality> fetchAllLocality() {
-        return localityRepository.findAll();
+    public String fetchAllLocality() {
+        JSONObject jsonObject;
+        JSONArray jsonArray = new JSONArray();
+        for(Locality locality: localityRepository.findAll()) {
+            jsonObject = new JSONObject();
+            jsonObject.put("id", locality.getLocalityId());
+            jsonObject.put("name", locality.getName());
+            jsonArray.put(jsonObject);
+        }
+
+        jsonObject = new JSONObject();
+        jsonObject.put("status", HttpStatus.OK.value());
+        jsonObject.put("message", "success");
+        jsonObject.put("data",jsonArray);
+        return jsonObject.toString();
     }
 
     @Override
@@ -33,8 +49,14 @@ public class LocalityServiceImpl implements LocalityService{
         if(!adminRepository.findById(adminId).isPresent()) {
             return null;
         }
+
         locality.setAdmin(adminRepository.findById(adminId).get());
         localityRepository.save(locality);
-        return "Locality successfully save";
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("status", HttpStatus.OK.value());
+        jsonObject.put("message", "Locality successfully save");
+
+        return jsonObject.toString();
     }
 }

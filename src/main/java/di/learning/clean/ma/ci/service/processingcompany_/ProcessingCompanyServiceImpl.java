@@ -6,6 +6,7 @@ import di.learning.clean.ma.ci.entity.ProcessingCompany;
 import di.learning.clean.ma.ci.entity.User;
 import di.learning.clean.ma.ci.repository.AdminRepository;
 import di.learning.clean.ma.ci.repository.ProcessingCompanyRepository;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,8 +29,25 @@ public class ProcessingCompanyServiceImpl implements ProcessingCompanyService{
      * @return
      */
     @Override
-    public List<ProcessingCompany> fetchAllProcessingCompanies() {
-        return processingCompanyRepository.findAll();
+    public String fetchAllProcessingCompanies() {
+        JSONObject jsonObject;
+        JSONArray jsonArray = new JSONArray();
+
+        for(ProcessingCompany processingCompany: processingCompanyRepository.findAll()) {
+            jsonObject = new JSONObject();
+            jsonObject.put("id", processingCompany.getProcessingCompanyId());
+            jsonObject.put("name", (processingCompany.getName() != null) ? processingCompany.getName() : "");
+            jsonObject.put("email", (processingCompany.getEmail() != null) ? processingCompany.getEmail() : "");
+            jsonObject.put("phone", (processingCompany.getPhone() != null) ? processingCompany.getPhone() : "");
+            jsonObject.put("username", (processingCompany.getUserName() != null) ? processingCompany.getUserName() : "");
+            jsonArray.put(jsonObject);
+        }
+
+        jsonObject = new JSONObject();
+        jsonObject.put("status", HttpStatus.OK.value());
+        jsonObject.put("message", "success");
+        jsonObject.put("data", jsonArray);
+        return jsonObject.toString();
     }
 
     /**
