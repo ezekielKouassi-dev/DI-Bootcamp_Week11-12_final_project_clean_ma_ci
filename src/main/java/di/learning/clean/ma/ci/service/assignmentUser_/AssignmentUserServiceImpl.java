@@ -1,8 +1,7 @@
 package di.learning.clean.ma.ci.service.assignmentUser_;
 
-import di.learning.clean.ma.ci.entity.Assignment;
+import di.learning.clean.ma.ci.entity.Adherent;
 import di.learning.clean.ma.ci.entity.AssignmentUser;
-import di.learning.clean.ma.ci.entity.User;
 import di.learning.clean.ma.ci.repository.AdherentRepository;
 import di.learning.clean.ma.ci.repository.AssignmentRepository;
 import di.learning.clean.ma.ci.repository.AssignmentUserRepository;
@@ -28,7 +27,7 @@ public class AssignmentUserServiceImpl implements AssignmentUserService {
 
     @Override
     public String fetchAssignmentUserById(Long userId, String state) {
-        Optional<User> user = adherentRepository.findById(userId);
+        Optional<Adherent> user = adherentRepository.findById(userId);
         JSONObject jsonObject;
         JSONArray jsonArray = new JSONArray();
         if (!user.isPresent()) {
@@ -37,7 +36,7 @@ public class AssignmentUserServiceImpl implements AssignmentUserService {
             jsonObject.put("message", "user dont' be found");
             return jsonObject.toString();
         }
-        List<AssignmentUser> assignmentUsers = assignmentUserRepository.findAllByUserAndAndState(user.get(), state);
+        List<AssignmentUser> assignmentUsers = assignmentUserRepository.findAllByAdherentAndState(user.get(), state);
 
         for (AssignmentUser el : assignmentUsers) {
             jsonObject = new JSONObject();

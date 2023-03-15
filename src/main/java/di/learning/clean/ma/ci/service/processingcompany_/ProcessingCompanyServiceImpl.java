@@ -3,7 +3,6 @@ package di.learning.clean.ma.ci.service.processingcompany_;
 import di.learning.clean.ma.ci.entity.Admin;
 import di.learning.clean.ma.ci.entity.Assignment;
 import di.learning.clean.ma.ci.entity.ProcessingCompany;
-import di.learning.clean.ma.ci.entity.User;
 import di.learning.clean.ma.ci.repository.AdminRepository;
 import di.learning.clean.ma.ci.repository.ProcessingCompanyRepository;
 import org.json.JSONArray;
@@ -36,7 +35,7 @@ public class ProcessingCompanyServiceImpl implements ProcessingCompanyService{
         for(ProcessingCompany processingCompany: processingCompanyRepository.findAll()) {
             jsonObject = new JSONObject();
             jsonObject.put("id", processingCompany.getProcessingCompanyId());
-            jsonObject.put("name", (processingCompany.getName() != null) ? processingCompany.getName() : "");
+            jsonObject.put("name", (processingCompany.getLastName() != null) ? processingCompany.getLastName() : "");
             jsonObject.put("email", (processingCompany.getEmail() != null) ? processingCompany.getEmail() : "");
             jsonObject.put("phone", (processingCompany.getPhone() != null) ? processingCompany.getPhone() : "");
             jsonObject.put("username", (processingCompany.getUserName() != null) ? processingCompany.getUserName() : "");
@@ -114,10 +113,10 @@ public class ProcessingCompanyServiceImpl implements ProcessingCompanyService{
         // TODO : add verification to processing company
         ProcessingCompany prc = processingCompanyRepository.findById(processingCompanyId).get();
 
-        if(Objects.nonNull(prc.getName()) &&
-                !"".equalsIgnoreCase(prc.getName())
+        if(Objects.nonNull(prc.getLastName()) &&
+                !"".equalsIgnoreCase(prc.getLastName())
         ) {
-            prc.setName(processingCompany.getName());
+            prc.setLastName(processingCompany.getLastName());
         }
 
         if(Objects.nonNull(prc.getEmail()) &&

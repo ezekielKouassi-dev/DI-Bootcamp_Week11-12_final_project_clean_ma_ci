@@ -1,22 +1,18 @@
 package di.learning.clean.ma.ci.service.adherent_;
 
-import di.learning.clean.ma.ci.entity.User;
+import di.learning.clean.ma.ci.entity.Adherent;
 import di.learning.clean.ma.ci.model.UserPayload;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface UserService {
-    public List<User> fetchAllUser();
+    public List<Adherent> fetchAllUser();
 
-    public User fetchUserById(Long userId);
+    public Adherent fetchUserById(Long userId);
 
     public String saveUser(Long userId, Long assignmentId);
 
-    public User updateUser(Long userId, User user);
+    public Adherent updateUser(Long userId, Adherent adherent);
 
     public String deleteUserById(Long userId);
 

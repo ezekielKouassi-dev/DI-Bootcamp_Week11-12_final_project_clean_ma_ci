@@ -19,8 +19,8 @@ public class AssignmentUser {
     private AssignmentUserId id;
 
     @ManyToOne
-    @MapsId("userId")
-    private User user;
+    @MapsId("adherentId")
+    private Adherent adherent;
 
     @ManyToOne
     @MapsId("assignmentId")

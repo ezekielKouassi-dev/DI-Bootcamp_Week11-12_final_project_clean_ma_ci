@@ -8,11 +8,7 @@ import di.learning.clean.ma.ci.repository.AssignmentRepository;
 import di.learning.clean.ma.ci.repository.AssignmentUserRepository;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,21 +27,21 @@ public class UserServiceImpl implements UserService {
     @Autowired
     AdminRepository adminRepository;
     @Override
-    public List<User> fetchAllUser() {
+    public List<Adherent> fetchAllUser() {
         return adherentRepository.findAll();
     }
 
     @Override
-    public User fetchUserById(Long userId)  {
+    public Adherent fetchUserById(Long userId)  {
         if(!adherentRepository.findById(userId).isPresent()) {
-            // throw new AdherentNotFoundExceptionHandler("User not found");
+            // throw new AdherentNotFoundExceptionHandler("Adherent not found");
         }
         return adherentRepository.findById(userId).get();
     }
 
     @Override
     public String saveUser(Long userId, Long assignmentId) {
-        Optional<User> user = adherentRepository.findById(userId);
+        Optional<Adherent> user = adherentRepository.findById(userId);
         Optional<Assignment> assignment = assignmentRepository.findById(assignmentId);
         JSONObject jsonObject;
 
@@ -56,16 +52,20 @@ public class UserServiceImpl implements UserService {
             return jsonObject.toString();
         }
 
+        System.out.println("I will find you");
+
         assignment.get().setNumberOfAcceptation(assignment.get().getNumberOfAcceptation() + 1);
         AssignmentUser assignmentUser = new AssignmentUser();
         AssignmentUserId assignmentUserId = new AssignmentUserId();
-        assignmentUserId.setUserId(userId);
+        assignmentUserId.setAdherentId(userId);
         assignmentUserId.setAssignmentId(assignmentId);
         assignmentUser.setId(assignmentUserId);
-        assignmentUser.setUser(user.get());
+        assignmentUser.setAdherent(user.get());
         assignmentUser.setAssignment(assignment.get());
         user.get().getAssignmentUsers().add(assignmentUser);
         assignment.get().getAssignmentUsers().add(assignmentUser);
+        assignmentUserRepository.save(assignmentUser);
+        assignmentRepository.save(assignment.get());
         adherentRepository.save(user.get());
 
         jsonObject = new JSONObject();
@@ -75,42 +75,42 @@ public class UserServiceImpl implements UserService {
     }
 
     /*
-        this method is for update User properties, for now it is only possible
-        to update the firstname, lastname, and User's password
+        this method is for update Adherent properties, for now it is only possible
+        to update the firstname, lastname, and Adherent's password
      */
     @Override
-    public User updateUser(Long userId, User user) {
-        User adr = adherentRepository.findById(userId).get();
+    public Adherent updateUser(Long userId, Adherent adherent) {
+        Adherent adr = adherentRepository.findById(userId).get();
 
-        if(Objects.nonNull(user.getFirstName()) &&
-                !"".equalsIgnoreCase(user.getFirstName())
+        if(Objects.nonNull(adherent.getFirstName()) &&
+                !"".equalsIgnoreCase(adherent.getFirstName())
         ) {
-            adr.setFirstName(user.getFirstName());
+            adr.setFirstName(adherent.getFirstName());
         }
 
-        if(Objects.nonNull(user.getLastName()) &&
-                !"".equalsIgnoreCase(user.getLastName())
+        if(Objects.nonNull(adherent.getLastName()) &&
+                !"".equalsIgnoreCase(adherent.getLastName())
         ) {
-            adr.setLastName(user.getLastName());
+            adr.setLastName(adherent.getLastName());
         }
 
-        if(Objects.nonNull(user.getPassword()) &&
-                !"".equalsIgnoreCase(user.getPassword())
+        if(Objects.nonNull(adherent.getPassword()) &&
+                !"".equalsIgnoreCase(adherent.getPassword())
         ) {
-            adr.setPassword(user.getPassword());
+            adr.setPassword(adherent.getPassword());
         }
         return adherentRepository.save(adr);
     }
 
     @Override
     public String deleteUserById(Long adherentId) {
-        Optional<User> adherent = adherentRepository.findById(adherentId);
+        Optional<Adherent> adherent = adherentRepository.findById(adherentId);
 
         if(!adherent.isPresent()) {
-            // throw new AdherentNotFoundExceptionHandler("User is not found");
+            // throw new AdherentNotFoundExceptionHandler("Adherent is not found");
         }
         adherentRepository.deleteById(adherentId);
-        return "User successfully deleted";
+        return "Adherent successfully deleted";
     }
 
     @Override
@@ -137,14 +137,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String register(UserPayload userPayload) {
-        User user = new User();
-        user.setLastName(userPayload.getLastName());
-        user.setFirstName(userPayload.getFirstName());
-        user.setUsername(userPayload.getIdentifier());
-        user.setEmail(userPayload.getEmail());
-        user.setRole(userPayload.getRole());
-        user.setPassword(userPayload.getPassword());
-        adherentRepository.save(user);
+        Adherent adherent = new Adherent();
+        adherent.setLastName(userPayload.getLastName());
+        adherent.setFirstName(userPayload.getFirstName());
+        adherent.setUserName(userPayload.getIdentifier());
+        adherent.setEmail(userPayload.getEmail());
+        // adherent.setRole(userPayload.getRole());
+        adherent.setPassword(userPayload.getPassword());
+        adherentRepository.save(adherent);
 
         /*
            formation of json
@@ -158,7 +158,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String login(UserPayload userPayload) {
-        Optional<User> user = adherentRepository.findUserByUsernameIgnoreCaseAndPassword(userPayload.getIdentifier(), userPayload.getPassword());
+        Optional<Adherent> user = adherentRepository.findUserByUserNameIgnoreCaseAndPassword(userPayload.getIdentifier(), userPayload.getPassword());
         Optional<Admin> admin = adminRepository.findAdminByUserNameAndPassword(userPayload.getIdentifier(), userPayload.getPassword());
         JSONObject jsonObject;
         if(!user.isPresent()) {

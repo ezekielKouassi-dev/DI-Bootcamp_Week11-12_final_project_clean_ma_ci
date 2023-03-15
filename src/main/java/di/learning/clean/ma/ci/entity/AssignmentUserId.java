@@ -13,19 +13,19 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AssignmentUserId implements Serializable {
-    private Long userId;
+    private Long adherentId;
     private Long assignmentId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof AssignmentUserId that)) return false;
-        return getUserId().equals(that.getUserId()) && getAssignmentId().equals(that.getAssignmentId());
+        return getAdherentId().equals(that.getAdherentId()) && getAssignmentId().equals(that.getAssignmentId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUserId(), getAssignmentId());
+        return Objects.hash(getAdherentId(), getAssignmentId());
     }
 
 

@@ -17,19 +17,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "adminId")
-public class Admin {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long adminId;
-    private String lastName;
-    private String firstName;
-    private String userName;
-    private String password;
-    private String email;
-    private String phone;
-    private String role = "ADMIN";
-    private Date createDat;
-    private Date updateDat;
+public class Admin extends User{
+    @Column(name = "admin_id")
+    private String adminId;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private User user;
+
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
     @JsonIdentityReference(alwaysAsId = true)
     private List<Locality> localityList;

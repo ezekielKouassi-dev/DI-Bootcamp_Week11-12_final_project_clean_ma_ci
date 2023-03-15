@@ -10,20 +10,21 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "processing_company")
+@Table(name="adherents")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProcessingCompany extends User{
-    @Column(name = "processing_company_id")
-    private String processingCompanyId;
+public class Adherent extends User{
+    @Column(name = "adherent_id")
+    private String adherentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
-    @OneToMany(mappedBy = "processingCompany", cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "adherent")
     @JsonIdentityReference(alwaysAsId = true)
-    private List<Assignment> assignmentList;
+    private List<AssignmentUser> assignmentUsers;
     @ManyToOne
-    private Admin admin;
+    private Ranks ranks;
 }

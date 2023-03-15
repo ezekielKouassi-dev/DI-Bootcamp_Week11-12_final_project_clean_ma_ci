@@ -15,7 +15,7 @@ public class Ranks {
     private Date createDat;
     private Date updateDat;
     @OneToMany(mappedBy = "ranks", cascade = CascadeType.ALL)
-    private List<User> userList;
+    private List<Adherent> adherentList;
 
     @ManyToOne
     private Admin admin;

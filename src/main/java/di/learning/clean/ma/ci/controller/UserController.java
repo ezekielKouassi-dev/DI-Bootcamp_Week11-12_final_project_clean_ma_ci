@@ -1,17 +1,10 @@
 package di.learning.clean.ma.ci.controller;
 
-import di.learning.clean.ma.ci.entity.Assignment;
-import di.learning.clean.ma.ci.entity.AssignmentUser;
-import di.learning.clean.ma.ci.entity.AssignmentUserId;
-import di.learning.clean.ma.ci.entity.User;
+import di.learning.clean.ma.ci.entity.Adherent;
 import di.learning.clean.ma.ci.error.AdherentNotFoundExceptionHandler;
 import di.learning.clean.ma.ci.service.adherent_.UserService;
 import di.learning.clean.ma.ci.service.assignment_.AssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,18 +18,18 @@ public class UserController {
     @Autowired
     private AssignmentService assignmentService;
     @GetMapping()
-    public List<User> fetchAllUser() {
+    public List<Adherent> fetchAllUser() {
         return userService.fetchAllUser();
     }
 
     @GetMapping("/{id}")
-    public User fetchUserById(@PathVariable("id") Long userId) throws AdherentNotFoundExceptionHandler {
+    public Adherent fetchUserById(@PathVariable("id") Long userId) throws AdherentNotFoundExceptionHandler {
         return userService.fetchUserById(userId);
     }
 
     @PutMapping("/{id}")
-    public User updateAdherent(@PathVariable("id") Long userId, @RequestBody User User) {
-        return userService.updateUser(userId, User);
+    public Adherent updateAdherent(@PathVariable("id") Long userId, @RequestBody Adherent Adherent) {
+        return userService.updateUser(userId, Adherent);
     }
 
     @DeleteMapping("/{id}")

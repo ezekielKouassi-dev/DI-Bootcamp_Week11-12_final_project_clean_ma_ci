@@ -6,29 +6,19 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "roles")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
-public class User {
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long roleId;
 
-    private String firstName;
-
-    private String lastName;
-
-    private String email;
-
-    private String phone;
-
-    private String userName;
-
-    private String password;
+    private String roleName;
 
     private Date createDat;
 
@@ -36,6 +26,6 @@ public class User {
 
     private String status;
 
-    @ManyToOne
-    private Role role;
+    @OneToMany(mappedBy = "role")
+    private List<User> userList;
 }

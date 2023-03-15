@@ -1,9 +1,9 @@
 package di.learning.clean.ma.ci.service.assignment_;
 
+import di.learning.clean.ma.ci.entity.Adherent;
 import di.learning.clean.ma.ci.entity.Assignment;
 import di.learning.clean.ma.ci.entity.AssignmentUser;
 import di.learning.clean.ma.ci.entity.ProcessingCompany;
-import di.learning.clean.ma.ci.entity.User;
 import di.learning.clean.ma.ci.repository.AdherentRepository;
 import di.learning.clean.ma.ci.repository.AssignmentRepository;
 import di.learning.clean.ma.ci.repository.AssignmentUserRepository;
@@ -111,8 +111,8 @@ public class AssignmentServiceImpl implements AssignmentService{
         }
         for(AssignmentUser assignmentUser : assignmentRepository.findById(assignmentId).get().getAssignmentUsers()) {
             jsonObject = new JSONObject();
-            jsonObject.put("id", assignmentUser.getUser().getAdherentId());
-            jsonObject.put("fullName", assignmentUser.getUser().getFirstName() + " " + assignmentUser.getUser().getLastName());
+            jsonObject.put("id", assignmentUser.getAdherent().getAdherentId());
+            jsonObject.put("fullName", assignmentUser.getAdherent().getFirstName() + " " + assignmentUser.getAdherent().getLastName());
             jsonArray.put(jsonObject);
         }
         jsonObject = new JSONObject();
@@ -129,7 +129,7 @@ public class AssignmentServiceImpl implements AssignmentService{
     @Override
     public String fetchAvailableAssignments(Long userId, int start, int limit, String search_value) {
 
-        Optional<User> user = adherentRepository.findById(userId);
+        Optional<Adherent> user = adherentRepository.findById(userId);
         JSONObject jsonObject;
         JSONArray jsonArray = new JSONArray();
 
@@ -140,7 +140,7 @@ public class AssignmentServiceImpl implements AssignmentService{
             return jsonObject.toString();
         }
 
-        List<AssignmentUser> assignmentUsers = assignmentUserRepository.findAssignmentUserByUser(user.get());
+        List<AssignmentUser> assignmentUsers = assignmentUserRepository.findAssignmentUserByAdherent(user.get());
 
         if(assignmentUsers.size() > 0) {
             List<Long> assignmentIds = new ArrayList<Long>();
@@ -164,8 +164,8 @@ public class AssignmentServiceImpl implements AssignmentService{
 
             jsonObject = new JSONObject();
             jsonObject.put("draw", 1);
-            jsonObject.put("recordsTotal", this.CountAllAvailableAssignments(start, limit, search_value, assignmentIds));
-            jsonObject.put("recordsFiltered", this.CountAllAvailableAssignments(start, limit, search_value, assignmentIds));
+            // jsonObject.put("recordsTotal", this.CountAllAvailableAssignments(start, limit, search_value, assignmentIds));
+            // jsonObject.put("recordsFiltered", this.CountAllAvailableAssignments(start, limit, search_value, assignmentIds));
             jsonObject.put("data", jsonArray);
 
 
