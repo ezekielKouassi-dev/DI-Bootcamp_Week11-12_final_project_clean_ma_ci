@@ -1,5 +1,6 @@
 package di.learning.clean.ma.ci.model;
 
+import di.learning.clean.ma.ci.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,5 +20,5 @@ public class UserPayload {
     String identifier;
     String email;
     String password;
-    String role = "USER";
+    Long roleId;
 }

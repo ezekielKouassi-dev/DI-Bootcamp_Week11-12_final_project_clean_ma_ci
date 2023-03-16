@@ -2,10 +2,7 @@ package di.learning.clean.ma.ci.service.adherent_;
 
 import di.learning.clean.ma.ci.entity.*;
 import di.learning.clean.ma.ci.model.UserPayload;
-import di.learning.clean.ma.ci.repository.AdherentRepository;
-import di.learning.clean.ma.ci.repository.AdminRepository;
-import di.learning.clean.ma.ci.repository.AssignmentRepository;
-import di.learning.clean.ma.ci.repository.AssignmentUserRepository;
+import di.learning.clean.ma.ci.repository.*;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,9 +20,12 @@ public class UserServiceImpl implements UserService {
     AssignmentRepository assignmentRepository;
     @Autowired
     AssignmentUserRepository assignmentUserRepository;
-
     @Autowired
     AdminRepository adminRepository;
+    @Autowired
+    RoleRepository roleRepository;
+    @Autowired
+    ProcessingCompanyRepository processingCompanyRepository;
     @Override
     public List<Adherent> fetchAllUser() {
         return adherentRepository.findAll();
@@ -137,18 +137,57 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String register(UserPayload userPayload) {
-        Adherent adherent = new Adherent();
-        adherent.setLastName(userPayload.getLastName());
-        adherent.setFirstName(userPayload.getFirstName());
-        adherent.setUserName(userPayload.getIdentifier());
-        adherent.setEmail(userPayload.getEmail());
-        // adherent.setRole(userPayload.getRole());
-        adherent.setPassword(userPayload.getPassword());
-        adherentRepository.save(adherent);
+        Optional<Role> role = roleRepository.findById(userPayload.getRoleId());
 
-        /*
-           formation of json
-        */
+        if(!role.isPresent()) {
+            return  null;
+        }
+
+        switch (role.get().getRoleName()) {
+            case "USER":
+                Adherent adherent = new Adherent();
+
+                adherent.setLastName(userPayload.getLastName());
+                adherent.setFirstName(userPayload.getFirstName());
+                adherent.setUserName(userPayload.getIdentifier());
+                adherent.setEmail(userPayload.getEmail());
+                adherent.setRole(role.get());
+                adherent.setPassword(userPayload.getPassword());
+
+                adherentRepository.save(adherent);
+                break;
+
+            case "ADMIN":
+                Admin admin = new Admin();
+
+                admin.setLastName(userPayload.getLastName());
+                admin.setFirstName(userPayload.getFirstName());
+                admin.setUserName(userPayload.getIdentifier());
+                admin.setEmail(userPayload.getEmail());
+                admin.setRole(role.get());
+                admin.setPassword(userPayload.getPassword());
+
+                adminRepository.save(admin);
+                break;
+
+            case "SOCIETY":
+                ProcessingCompany processingCompany = new ProcessingCompany();
+
+                processingCompany.setLastName(userPayload.getLastName());
+                processingCompany.setUserName(userPayload.getIdentifier());
+                processingCompany.setEmail(userPayload.getEmail());
+                processingCompany.setRole(role.get());
+                processingCompany.setPassword(userPayload.getPassword());
+
+                processingCompanyRepository.save(processingCompany);
+            default:
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("status", HttpStatus.NOT_FOUND.value());
+                jsonObject.put("message", "user don't be found");
+
+                return jsonObject.toString();
+
+        }
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status", HttpStatus.OK.value());
