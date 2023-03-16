@@ -1,9 +1,6 @@
 package di.learning.clean.ma.ci.service.auth_;
 
-import di.learning.clean.ma.ci.entity.Adherent;
-import di.learning.clean.ma.ci.entity.Admin;
-import di.learning.clean.ma.ci.entity.ProcessingCompany;
-import di.learning.clean.ma.ci.entity.Role;
+import di.learning.clean.ma.ci.entity.*;
 import di.learning.clean.ma.ci.model.UserPayload;
 import di.learning.clean.ma.ci.repository.*;
 import org.json.JSONObject;
@@ -97,6 +94,18 @@ public class AuthServiceImpl implements AuthService{
      */
     @Override
     public String login(UserPayload userPayload) {
-        return null;
+        Optional<User> user = userRepository.findUserByUserNameAndPassword(userPayload.getIdentifier(), userPayload.getPassword());
+        JSONObject jsonObject;
+        if(!user.isPresent()) {
+            return null;
+        }
+
+        jsonObject = new JSONObject();
+        jsonObject.put("status", HttpStatus.OK.value());
+        jsonObject.put("message", "success");
+        jsonObject.put("id", user.get().getUserId());
+        jsonObject.put("roleId", user.get().getRole().getRoleId());
+        jsonObject.put("role", user.get().getRole().getRoleName());
+        return jsonObject.toString();
     }
 }
