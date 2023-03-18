@@ -209,7 +209,7 @@ public class UserServiceImpl implements UserService {
             }
             jsonObject = new JSONObject();
             jsonObject.put("status", HttpStatus.OK.value());
-            jsonObject.put("id", admin.get().getAdminId());
+            jsonObject.put("id", admin.get().getUserId());
             jsonObject.put("role", admin.get().getRole());
             jsonObject.put("message", "login success");
             return jsonObject.toString();
@@ -217,7 +217,7 @@ public class UserServiceImpl implements UserService {
 
         jsonObject = new JSONObject();
         jsonObject.put("status", HttpStatus.OK.value());
-        jsonObject.put("id", user.get().getAdherentId());
+        jsonObject.put("id", user.get().getUserId());
         jsonObject.put("role", user.get().getRole());
         jsonObject.put("message", "login success");
         return jsonObject.toString();

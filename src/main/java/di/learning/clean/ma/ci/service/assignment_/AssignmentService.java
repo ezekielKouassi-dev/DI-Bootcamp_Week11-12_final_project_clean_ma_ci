@@ -2,6 +2,7 @@ package di.learning.clean.ma.ci.service.assignment_;
 
 import di.learning.clean.ma.ci.entity.Assignment;
 import di.learning.clean.ma.ci.error.AssignmentNotFoundExceptionHandler;
+import di.learning.clean.ma.ci.model.AssignmentPayload;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface AssignmentService {
 
     public Assignment fetchAssignment(Long assignmentId);
 
-    public String saveAssignment(Assignment assignment, Long processingCompanyId);
+    public String saveAssignment(AssignmentPayload assignmentPayload);
 
     public Assignment updateAssignment(Long assignmentId, Assignment assignment);
 

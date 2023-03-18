@@ -1,13 +1,9 @@
 package di.learning.clean.ma.ci.service.assignment_;
 
-import di.learning.clean.ma.ci.entity.Adherent;
-import di.learning.clean.ma.ci.entity.Assignment;
-import di.learning.clean.ma.ci.entity.AssignmentUser;
-import di.learning.clean.ma.ci.entity.ProcessingCompany;
-import di.learning.clean.ma.ci.repository.AdherentRepository;
-import di.learning.clean.ma.ci.repository.AssignmentRepository;
-import di.learning.clean.ma.ci.repository.AssignmentUserRepository;
-import di.learning.clean.ma.ci.repository.ProcessingCompanyRepository;
+import di.learning.clean.ma.ci.entity.*;
+import di.learning.clean.ma.ci.model.AssignmentPayload;
+import di.learning.clean.ma.ci.repository.*;
+import org.apache.tomcat.util.http.parser.HttpParser;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +28,9 @@ public class AssignmentServiceImpl implements AssignmentService{
 
     @Autowired
     private ProcessingCompanyRepository processingCompanyRepository;
+
+    @Autowired
+    private PointOfDropRepository pointOfDropRepository;
     @PersistenceContext
     private EntityManager em;
     @Override
@@ -71,15 +70,33 @@ public class AssignmentServiceImpl implements AssignmentService{
     }
 
     @Override
-    public String saveAssignment(Assignment assignment, Long processingCompanyId) {
-        Optional<ProcessingCompany> processingCompany = processingCompanyRepository.findById(processingCompanyId);
+    public String saveAssignment(AssignmentPayload assignmentPayload) {
+        Optional<ProcessingCompany> processingCompany = processingCompanyRepository
+                .findById(assignmentPayload.getProcessingCompanyId());
+        Optional<PointOfDrop> pointOfDrop = pointOfDropRepository.findById((long) Integer.parseInt(assignmentPayload.getPointOfDropId()));
 
-        if(!processingCompany.isPresent()) {
-            return "registration failed this processing company is not found ";
+        JSONObject jsonObject;
+
+        if(!processingCompany.isPresent() && !pointOfDrop.isPresent()) {
+            jsonObject = new JSONObject();
+            jsonObject.put("status", HttpStatus.NOT_FOUND.value());
+            jsonObject.put("message", "society or point of drop don't be found");
+            return jsonObject.toString();
         }
+        Assignment assignment = new Assignment();
         assignment.setProcessingCompany(processingCompany.get());
+        assignment.setTitle(assignmentPayload.getTitle());
+        assignment.setDescription(assignmentPayload.getDescription());
+        assignment.setReward(assignmentPayload.getReward());
+        assignment.setDuration(assignmentPayload.getDuration());
+        assignment.setPointOfDrop(pointOfDrop.get());
+        assignment.setNumberOfAdherent(assignmentPayload.getNumberOfAdherent());
         assignmentRepository.save(assignment);
-        return "successfully register assignment";
+
+        jsonObject = new JSONObject();
+        jsonObject.put("status", HttpStatus.OK.value());
+        jsonObject.put("message", "successfully register assignment");
+        return jsonObject.toString();
     }
 
     @Override
@@ -111,7 +128,7 @@ public class AssignmentServiceImpl implements AssignmentService{
         }
         for(AssignmentUser assignmentUser : assignmentRepository.findById(assignmentId).get().getAssignmentUsers()) {
             jsonObject = new JSONObject();
-            jsonObject.put("id", assignmentUser.getAdherent().getAdherentId());
+            jsonObject.put("id", assignmentUser.getAdherent().getUserId());
             jsonObject.put("fullName", assignmentUser.getAdherent().getFirstName() + " " + assignmentUser.getAdherent().getLastName());
             jsonArray.put(jsonObject);
         }
@@ -157,6 +174,9 @@ public class AssignmentServiceImpl implements AssignmentService{
                 jsonObject.put("assignmentDescription", assignment.getDescription());
                 jsonObject.put("numberOfAdherent", assignment.getNumberOfAdherent());
                 jsonObject.put("numberOfAcceptation", assignment.getNumberOfAcceptation());
+                jsonObject.put("pointOfDrop", assignment.getPointOfDrop().getName());
+                jsonObject.put("locality", assignment.getPointOfDrop().getLocality().getName());
+                jsonObject.put("processingCompany", assignment.getProcessingCompany().getLastName());
                 jsonObject.put("reward", assignment.getReward());
                 jsonArray.put(jsonObject);
             }
@@ -179,6 +199,9 @@ public class AssignmentServiceImpl implements AssignmentService{
             jsonObject.put("assignmentDescription", assignment.getDescription());
             jsonObject.put("numberOfAdherent", assignment.getNumberOfAdherent());
             jsonObject.put("numberOfAcceptation", assignment.getNumberOfAcceptation());
+            jsonObject.put("pointOfDrop", assignment.getPointOfDrop().getName());
+            jsonObject.put("locality", assignment.getPointOfDrop().getLocality().getName());
+            jsonObject.put("processingCompany", assignment.getProcessingCompany().getLastName());
             jsonObject.put("reward", assignment.getReward());
             jsonArray.put(jsonObject);
         }

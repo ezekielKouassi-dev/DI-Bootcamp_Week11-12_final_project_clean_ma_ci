@@ -18,8 +18,6 @@ import java.util.List;
 @AllArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "adminId")
 public class Admin extends User{
-    @Column(name = "admin_id")
-    private String adminId;
 
     @ManyToOne
     @JoinColumn(name = "user_id", insertable = false, updatable = false)

@@ -3,8 +3,10 @@ package di.learning.clean.ma.ci.service.processingcompany_;
 import di.learning.clean.ma.ci.entity.Admin;
 import di.learning.clean.ma.ci.entity.Assignment;
 import di.learning.clean.ma.ci.entity.ProcessingCompany;
+import di.learning.clean.ma.ci.model.ProcessingCompanyPayload;
 import di.learning.clean.ma.ci.repository.AdminRepository;
 import di.learning.clean.ma.ci.repository.ProcessingCompanyRepository;
+import di.learning.clean.ma.ci.repository.RoleRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class ProcessingCompanyServiceImpl implements ProcessingCompanyService{
     @Autowired
     private AdminRepository adminRepository;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
     /**
      *
      * @return
@@ -34,7 +39,7 @@ public class ProcessingCompanyServiceImpl implements ProcessingCompanyService{
 
         for(ProcessingCompany processingCompany: processingCompanyRepository.findAll()) {
             jsonObject = new JSONObject();
-            jsonObject.put("id", processingCompany.getProcessingCompanyId());
+            jsonObject.put("id", processingCompany.getUserId());
             jsonObject.put("name", (processingCompany.getLastName() != null) ? processingCompany.getLastName() : "");
             jsonObject.put("email", (processingCompany.getEmail() != null) ? processingCompany.getEmail() : "");
             jsonObject.put("phone", (processingCompany.getPhone() != null) ? processingCompany.getPhone() : "");
@@ -66,12 +71,12 @@ public class ProcessingCompanyServiceImpl implements ProcessingCompanyService{
 
     /**
      *
-     * @param processingCompany
+     * @param processingCompanyPayload
      * @return
      */
     @Override
-    public String saveProcessingCompany(ProcessingCompany processingCompany, Long adminId) {
-        Optional<Admin> admin = adminRepository.findById(adminId);
+    public String saveProcessingCompany(ProcessingCompanyPayload processingCompanyPayload) {
+        Optional<Admin> admin = adminRepository.findById(processingCompanyPayload.getAdminId());
         JSONObject jsonObject;
 
         if(!admin.isPresent()) {
@@ -80,7 +85,15 @@ public class ProcessingCompanyServiceImpl implements ProcessingCompanyService{
             jsonObject.put("message", "your session is out");
             return jsonObject.toString();
         }
+
+        ProcessingCompany processingCompany = new ProcessingCompany();
+        processingCompany.setLastName(processingCompanyPayload.getName());
+        processingCompany.setUserName(processingCompanyPayload.getUsername());
         processingCompany.setAdmin(admin.get());
+        processingCompany.setPhone(processingCompanyPayload.getPhone());
+        processingCompany.setEmail(processingCompanyPayload.getEmail());
+        processingCompany.setPassword(processingCompanyPayload.getPassword());
+        processingCompany.setRole(roleRepository.findById(3L).get());
         processingCompanyRepository.save(processingCompany);
 
         jsonObject = new JSONObject();
@@ -143,12 +156,29 @@ public class ProcessingCompanyServiceImpl implements ProcessingCompanyService{
      * @return
      */
     @Override
-    public List<Assignment> fetchAllAssignment(Long processingCompanyId) {
+    public String fetchAllAssignment(Long processingCompanyId) {
         Optional<ProcessingCompany> processingCompany = processingCompanyRepository.findById(processingCompanyId);
-
+        JSONObject jsonObject;
+        JSONArray jsonArray = new JSONArray();
         if(!processingCompany.isPresent()) {
             return null;
         }
-        return processingCompany.get().getAssignmentList();
+
+        for (Assignment assignment : processingCompany.get().getAssignmentList()) {
+            jsonObject = new JSONObject();
+            jsonObject.put("title", assignment.getTitle());
+            jsonObject.put("description", assignment.getDescription());
+            jsonObject.put("numberOfAdherent", assignment.getNumberOfAdherent());
+            jsonObject.put("numberOfAcceptation", assignment.getNumberOfAcceptation());
+            jsonObject.put("reward", assignment.getReward());
+            jsonArray.put(jsonObject);
+        }
+
+        jsonObject = new JSONObject();
+        jsonObject.put("status", HttpStatus.OK.value());
+        jsonObject.put("message", "success");
+        jsonObject.put("data", jsonArray);
+
+        return jsonObject.toString();
     }
 }

@@ -1,6 +1,8 @@
 package di.learning.clean.ma.ci.service.locality_;
 
+import di.learning.clean.ma.ci.entity.Admin;
 import di.learning.clean.ma.ci.entity.Locality;
+import di.learning.clean.ma.ci.model.LocalityPayload;
 import di.learning.clean.ma.ci.repository.AdminRepository;
 import di.learning.clean.ma.ci.repository.LocalityRepository;
 import org.json.JSONArray;
@@ -10,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LocalityServiceImpl implements LocalityService{
@@ -45,12 +48,15 @@ public class LocalityServiceImpl implements LocalityService{
     }
 
     @Override
-    public String saveLocality(Long adminId, Locality locality) {
-        if(!adminRepository.findById(adminId).isPresent()) {
+    public String saveLocality(LocalityPayload localityPayload) {
+        Optional<Admin> admin = adminRepository.findById(localityPayload.getAdminId());
+        if(!admin.isPresent()) {
             return null;
         }
 
-        locality.setAdmin(adminRepository.findById(adminId).get());
+        Locality locality = new Locality();
+        locality.setName(localityPayload.getName());
+        locality.setAdmin(admin.get());
         localityRepository.save(locality);
 
         JSONObject jsonObject = new JSONObject();

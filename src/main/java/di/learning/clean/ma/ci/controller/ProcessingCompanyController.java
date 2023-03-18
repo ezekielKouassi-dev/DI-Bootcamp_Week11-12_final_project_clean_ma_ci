@@ -2,6 +2,7 @@ package di.learning.clean.ma.ci.controller;
 
 import di.learning.clean.ma.ci.entity.Assignment;
 import di.learning.clean.ma.ci.entity.ProcessingCompany;
+import di.learning.clean.ma.ci.model.ProcessingCompanyPayload;
 import di.learning.clean.ma.ci.service.processingcompany_.ProcessingCompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,18 +36,18 @@ public class ProcessingCompanyController {
     }
 
     @GetMapping("/{id}/assignments")
-    public List<Assignment> fetchAllAssignment(@PathVariable("id") Long processingCompanyId) {
+    public String fetchAllAssignment(@PathVariable("id") Long processingCompanyId) {
         return processingCompanyService.fetchAllAssignment(processingCompanyId);
     }
 
     /**
      *
-     * @param processingCompany
+     * @param processingCompanyPayload
      * @return
      */
-    @PostMapping("/admin/{id}")
-    public String saveProcessingCompany(@RequestBody ProcessingCompany processingCompany, @PathVariable("id") Long adminId) {
-        return processingCompanyService.saveProcessingCompany(processingCompany, adminId);
+    @PostMapping()
+    public String saveProcessingCompany(@RequestBody ProcessingCompanyPayload processingCompanyPayload) {
+        return processingCompanyService.saveProcessingCompany(processingCompanyPayload);
     }
 
     /**

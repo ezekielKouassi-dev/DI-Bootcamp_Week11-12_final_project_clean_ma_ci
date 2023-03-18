@@ -1,6 +1,7 @@
 package di.learning.clean.ma.ci.controller;
 
 import di.learning.clean.ma.ci.entity.Assignment;
+import di.learning.clean.ma.ci.model.AssignmentPayload;
 import di.learning.clean.ma.ci.service.assignment_.AssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +24,9 @@ public class AssignmentController {
         return assignmentService.fetchAssignment(assignmentId);
     }
 
-    @PostMapping("/processingCompany/{id}")
-    public String saveAssignment(@RequestBody Assignment assignment, @PathVariable("id") Long processingCompanyId) {
-        return assignmentService.saveAssignment(assignment, processingCompanyId);
+    @PostMapping()
+    public String saveAssignment(@RequestBody AssignmentPayload assignmentPayload) {
+        return assignmentService.saveAssignment(assignmentPayload);
     }
 
     @PutMapping("/{id}")
