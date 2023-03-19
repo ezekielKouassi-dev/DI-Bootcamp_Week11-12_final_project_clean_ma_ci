@@ -1,6 +1,7 @@
 package di.learning.clean.ma.ci.repository;
 
 import di.learning.clean.ma.ci.entity.Adherent;
+import di.learning.clean.ma.ci.entity.Assignment;
 import di.learning.clean.ma.ci.entity.AssignmentUser;
 import di.learning.clean.ma.ci.entity.AssignmentUserId;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,5 @@ import java.util.List;
 public interface AssignmentUserRepository extends JpaRepository<AssignmentUser, AssignmentUserId> {
     public List<AssignmentUser> findAllByAdherentAndState(Adherent adherent, String state);
     public List<AssignmentUser> findAssignmentUserByAdherent(Adherent adherent);
+    public List<AssignmentUser> findAllByAssignmentAndState(Assignment assignment, String state);
 }

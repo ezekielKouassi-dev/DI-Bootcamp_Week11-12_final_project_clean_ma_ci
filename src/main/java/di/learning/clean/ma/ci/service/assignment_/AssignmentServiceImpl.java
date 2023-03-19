@@ -147,13 +147,35 @@ public class AssignmentServiceImpl implements AssignmentService{
     public String validateAssignment(Long assignmentId) {
         Optional<Assignment> assignment = assignmentRepository.findById(assignmentId);
 
+        /*
+        * verify if assignment exist and throw exception
+        * */
         if(!assignment.isPresent()) {
             return null;
         }
 
+        /*
+        * get list of all assignment user using assignment id and the state
+        * */
+        List<AssignmentUser> assignmentUsers = assignmentUserRepository.findAllByAssignmentAndState(assignment.get(), "in progress");
+
+        /*
+        * completed assignment for all adherent who didn't leave assignment
+        * */
+        for(AssignmentUser assignmentUser: assignmentUsers) {
+            assignmentUser.setState("completed");
+            assignmentUserRepository.save(assignmentUser);
+        }
+
+        /*
+        * Completed assignment and save it
+        * */
         assignment.get().setCompleted(true);
         assignmentRepository.save(assignment.get());
 
+        /*
+        * Format jsonObject to string as a return type for tell user that his action has been successfully
+        * */
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status", HttpStatus.OK.value());
         jsonObject.put("message", "assignment is completed");
