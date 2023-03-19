@@ -175,6 +175,7 @@ public class ProcessingCompanyServiceImpl implements ProcessingCompanyService{
             jsonObject.put("pointOfDrop", assignment.getPointOfDrop().getName());
             jsonObject.put("duration", assignment.getDuration());
             jsonObject.put("reward", assignment.getReward());
+            jsonObject.put("isCompleted", assignment.isCompleted());
             jsonArray.put(jsonObject);
         }
 
