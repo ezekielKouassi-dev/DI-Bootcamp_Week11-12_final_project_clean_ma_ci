@@ -30,6 +30,9 @@ public class ProcessingCompany extends User implements Serializable {
     @ManyToOne
     private Admin admin;
 
+    @OneToMany(mappedBy = "processingCompany")
+    private List<Statistic> statistics;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
