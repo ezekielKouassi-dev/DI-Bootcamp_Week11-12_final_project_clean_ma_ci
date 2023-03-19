@@ -22,4 +22,5 @@ public interface AssignmentService {
 
     public String fetchAllCollaborator(Long assignmentId);
 
+    public String validateAssignment(Long assignmentId);
 }

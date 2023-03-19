@@ -18,11 +18,6 @@ public class AssignmentUserController {
     @Autowired
     private AssignmentUserService assignmentUserService;
 
-    // TODO : list of completed, revoke, in progress assignments for a specific user
-    /*
-        1. get user id in path variable
-        2. paste user id in parameter of fetchAllUserAssignment
-     */
     @GetMapping("/{id}/{state}")
     public String fetchAllUserAssignment(@PathVariable("id") Long userId, @PathVariable("state") String state) {
         return assignmentUserService.fetchAssignmentUserById(userId, state);

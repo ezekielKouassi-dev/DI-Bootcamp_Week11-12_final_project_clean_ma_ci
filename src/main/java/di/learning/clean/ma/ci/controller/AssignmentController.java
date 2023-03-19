@@ -55,5 +55,10 @@ public class AssignmentController {
         return assignmentService.fetchAvailableAssignments(userId, start, limit, search_value);
     }
 
+    @PatchMapping("/{id}")
+    public String validateAssignment(@PathVariable("id") Long assignmentId) {
+        return assignmentService.validateAssignment(assignmentId);
+    }
+
 
 }

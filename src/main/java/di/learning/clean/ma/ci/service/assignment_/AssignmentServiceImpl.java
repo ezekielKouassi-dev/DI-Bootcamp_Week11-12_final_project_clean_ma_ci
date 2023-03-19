@@ -140,6 +140,27 @@ public class AssignmentServiceImpl implements AssignmentService{
     }
 
     /**
+     * @param assignmentId
+     * @return
+     */
+    @Override
+    public String validateAssignment(Long assignmentId) {
+        Optional<Assignment> assignment = assignmentRepository.findById(assignmentId);
+
+        if(!assignment.isPresent()) {
+            return null;
+        }
+
+        assignment.get().setCompleted(true);
+        assignmentRepository.save(assignment.get());
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("status", HttpStatus.OK.value());
+        jsonObject.put("message", "assignment is completed");
+        return jsonObject.toString();
+    }
+
+    /**
      * @param userId
      * @return
      */
@@ -168,17 +189,20 @@ public class AssignmentServiceImpl implements AssignmentService{
 
 
             for(Assignment assignment : this.fetchAllOrOneAssignment(start, limit, search_value, assignmentIds)) {
-                jsonObject = new JSONObject();
-                jsonObject.put("assignmentId", assignment.getAssignmentId());
-                jsonObject.put("assignmentTitle", assignment.getTitle());
-                jsonObject.put("assignmentDescription", assignment.getDescription());
-                jsonObject.put("numberOfAdherent", assignment.getNumberOfAdherent());
-                jsonObject.put("numberOfAcceptation", assignment.getNumberOfAcceptation());
-                jsonObject.put("pointOfDrop", assignment.getPointOfDrop().getName());
-                jsonObject.put("locality", assignment.getPointOfDrop().getLocality().getName());
-                jsonObject.put("processingCompany", assignment.getProcessingCompany().getLastName());
-                jsonObject.put("reward", assignment.getReward());
-                jsonArray.put(jsonObject);
+                if(assignment.getNumberOfAdherent() > assignment.getNumberOfAcceptation()) {
+                    jsonObject = new JSONObject();
+                    jsonObject.put("assignmentId", assignment.getAssignmentId());
+                    jsonObject.put("assignmentTitle", assignment.getTitle());
+                    jsonObject.put("assignmentDescription", assignment.getDescription());
+                    jsonObject.put("numberOfAdherent", assignment.getNumberOfAdherent());
+                    jsonObject.put("numberOfAcceptation", assignment.getNumberOfAcceptation());
+                    jsonObject.put("pointOfDrop", assignment.getPointOfDrop().getName());
+                    jsonObject.put("locality", assignment.getPointOfDrop().getLocality().getName());
+                    jsonObject.put("processingCompany", assignment.getProcessingCompany().getLastName());
+                    jsonObject.put("reward", assignment.getReward());
+                    jsonArray.put(jsonObject);
+                }
+
             }
 
 
