@@ -166,6 +166,8 @@ public class ProcessingCompanyServiceImpl implements ProcessingCompanyService{
 
         for (Assignment assignment : processingCompany.get().getAssignmentList()) {
             jsonObject = new JSONObject();
+            jsonObject.put("id", assignment.getAssignmentId());
+
             jsonObject.put("title", assignment.getTitle());
             jsonObject.put("description", assignment.getDescription());
             jsonObject.put("numberOfAdherent", assignment.getNumberOfAdherent());
