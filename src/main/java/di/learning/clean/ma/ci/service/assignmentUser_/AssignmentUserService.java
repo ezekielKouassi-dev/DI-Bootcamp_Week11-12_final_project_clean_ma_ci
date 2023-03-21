@@ -7,4 +7,7 @@ public interface AssignmentUserService {
 
     public String fetchAssignmentUserById(Long userId, String state);
 
+    public String fetchStatistcsPerLocality(String state, String locality);
+
+    public String fetchStatisticsForAdherent(Long adherentId);
 }

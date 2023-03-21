@@ -23,4 +23,14 @@ public class AssignmentUserController {
         return assignmentUserService.fetchAssignmentUserById(userId, state);
     }
 
+    @GetMapping("/{id}/statistics")
+    public String fetchStatisticsForAdherent(@PathVariable("id") Long adherentId) {
+        return assignmentUserService.fetchStatisticsForAdherent(adherentId);
+    }
+
+    /*@GetMapping("/{state}/{locality}")
+    public String fetchStatisticsPerLocality(@PathVariable("state") String state, @PathVariable("locality") String locality) {
+        return assignmentUserService.fetchStatistcsPerLocality(state, locality);
+    }*/
+
 }

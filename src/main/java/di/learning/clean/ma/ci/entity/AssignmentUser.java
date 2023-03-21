@@ -29,7 +29,7 @@ public class AssignmentUser implements Serializable {
     private Assignment assignment;
 
     // FIXME : update the default value of state
-    private String state = "in progress";
+    private String state = "progress";
 
     @Override
     public boolean equals(Object o) {

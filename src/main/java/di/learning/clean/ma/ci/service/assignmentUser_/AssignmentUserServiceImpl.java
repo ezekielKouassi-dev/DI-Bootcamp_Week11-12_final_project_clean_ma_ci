@@ -53,4 +53,54 @@ public class AssignmentUserServiceImpl implements AssignmentUserService {
         return jsonObject.toString();
     }
 
+    /**
+     * @param state
+     * @param localityName
+     * @return
+     */
+    @Override
+    public String fetchStatistcsPerLocality(String state, String localityName) {
+        JSONObject jsonObject = new JSONObject();
+        double result = 0;
+        result = assignmentUserRepository.countAllByAssignment_PointOfDrop_Locality_NameAndState(localityName, state);
+
+        jsonObject.put("status", HttpStatus.OK.value());
+        jsonObject.put("message", "success");
+        jsonObject.put("data", result);
+
+        return jsonObject.toString();
+    }
+
+    /**
+     * @param adherentId
+     * @return
+     */
+    @Override
+    public String fetchStatisticsForAdherent(Long adherentId) {
+        JSONObject jsonObject = new JSONObject();
+        Optional<Adherent> adherent = adherentRepository.findById(adherentId);
+
+        if(!adherent.isPresent()) {
+            jsonObject.put("status", HttpStatus.NOT_FOUND.value());
+            jsonObject.put("message", "not found");
+            return jsonObject.toString();
+        }
+
+        double dblTotalAssignmentByUser =  assignmentUserRepository.countAssignmentUserByAdherent(adherent.get());
+        double dblTotalAssignmentProgress = assignmentUserRepository.countAssignmentUserByAdherentAndState(adherent.get(), "progress");
+        double dblTotalAssignmentCompleted = assignmentUserRepository.countAssignmentUserByAdherentAndState(adherent.get(), "completed");
+        double dblTotalAssignmentLeave = assignmentUserRepository.countAssignmentUserByAdherentAndState(adherent.get(), "leave");
+
+
+        double dblStatsAssignmentProgress = (dblTotalAssignmentProgress * 100)/dblTotalAssignmentByUser;
+        double dblStatsAssignmentCompleted = (dblTotalAssignmentCompleted * 100)/dblTotalAssignmentByUser;
+        double dblStatsAssignmentLeave = (dblTotalAssignmentLeave * 100)/dblTotalAssignmentByUser;
+        jsonObject.put("status", HttpStatus.OK.value());
+        jsonObject.put("message", "success");
+        jsonObject.put("dblStatsAssignmentProgress", dblStatsAssignmentProgress);
+        jsonObject.put("dblStatsAssignmentCompleted", dblStatsAssignmentCompleted);
+        jsonObject.put("dblStatsAssignmentLeave", dblStatsAssignmentLeave);
+        return jsonObject.toString();
+    }
+
 }

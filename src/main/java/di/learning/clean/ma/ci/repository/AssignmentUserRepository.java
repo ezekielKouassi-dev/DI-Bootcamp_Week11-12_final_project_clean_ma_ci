@@ -17,12 +17,25 @@ public interface AssignmentUserRepository extends JpaRepository<AssignmentUser, 
     /*
     * method for count all assignment that has been completed, leave or in progress for a specific adherent
     * */
-    public double countAllByAdherent_UserIdAndState(Long adherentId, String state);
+   public double countAllByAdherent_UserIdAndState(Long adherentId, String state);
 
     /*
     * method for count all user which completed, leave or progress assignment for a specific processing company
     * */
     public double countAllByAssignment_ProcessingCompany_UserIdAndState(Long processingCompanyId, String state);
 
-    public double countAllByAssignment_PointOfDrop_Locality_NameAndState();
+    /*
+    * method for all assignment that has been completed, leave or in progress per locality
+    * */
+    public double countAllByAssignment_PointOfDrop_Locality_NameAndState(String localityName, String state);
+
+    /*
+    * method for all assignment for a specific user
+    * */
+    public double countAssignmentUserByAdherent(Adherent adherent);
+
+    /*
+    * method for all assignment for a specific user by the state
+    * */
+    public double countAssignmentUserByAdherentAndState(Adherent adherent, String state);
 }
